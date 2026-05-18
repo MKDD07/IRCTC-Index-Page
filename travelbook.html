@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IRCTC Tourism | Domestic And International Tour Packages</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&family=Libre+Baskerville:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+<link href="style.css" rel="stylesheet">
+<style>
+  body { font-family: 'Google Sans', sans-serif; }
+  .font-display { font-family: 'Libre Baskerville', serif; }
+  .swiper-pagination-bullet-active { background: #2d2383 !important; }
+</style>
+</head>
+<body class="bg-gray-50 text-gray-800 m-0 p-0 antialiased">
+
+<!-- NAVBAR -->
+<nav class="bg-white border-b border-gray-100 sticky top-0 z-50 shadow-sm">
+  <div class="max-w-[1400px] mx-auto px-4  py-3 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <img src="https://www.hotels.irctc.co.in/assets/images/tourism-logo.webp" alt="IRCTC Tourism" class="h-16 w-auto max-w-[200px] object-contain">
+    </div>
+    <div class="hidden md:flex items-center gap-6 text-sm font-medium text-gray-600">
+      <a href="#" class="hover:text-red-500 transition-colors">My Trips</a>
+      <a href="#" class="hover:text-red-500 transition-colors">Offers</a>
+      <a href="#" class="hover:text-red-500 transition-colors">Support</a>
+      <button class="primary-color text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-red-600 transition-colors">Login / Sign Up</button>
+    </div>
+    <button class="md:hidden relative w-8 h-8 flex items-center justify-center group" onclick="
+      const menu = document.getElementById('mobile-menu');
+      this.classList.toggle('menu-open');
+      if (menu.classList.contains('max-h-0')) {
+        menu.classList.remove('max-h-0', 'opacity-0');
+        menu.classList.add('max-h-[400px]', 'opacity-100', 'py-4', 'border-t');
+      } else {
+        menu.classList.remove('max-h-[400px]', 'opacity-100', 'py-4', 'border-t');
+        menu.classList.add('max-h-0', 'opacity-0');
+      }
+    ">
+      <i class="fa-solid fa-bars text-2xl text-gray-800 absolute transition-all duration-300 transform group-[.menu-open]:rotate-90 group-[.menu-open]:opacity-0 group-[.menu-open]:scale-50"></i>
+      <i class="fa-solid fa-xmark text-2xl text-gray-800 absolute transition-all duration-300 transform -rotate-90 opacity-0 scale-50 group-[.menu-open]:rotate-0 group-[.menu-open]:opacity-100 group-[.menu-open]:scale-100"></i>
+    </button>
+  </div>
+  <div id="mobile-menu" class="md:hidden bg-white border-gray-100 px-4 flex flex-col gap-4 text-sm font-medium text-gray-600 max-h-0 opacity-0 overflow-hidden transition-all duration-300 ease-in-out">
+    <a href="#" class="hover:text-red-500 transition-colors">My Trips</a>
+    <a href="#" class="hover:text-red-500 transition-colors">Offers</a>
+    <a href="#" class="hover:text-red-500 transition-colors">Support</a>
+    <button class="primary-color text-white py-2 rounded-lg hover:bg-red-600 transition-colors">Login / Sign Up</button>
+  </div>
+</nav>
+
+<!-- HERO SECTION -->
+<section class="relative bg-white overflow-hidden flex items-center justify-center py-12" style="min-height:640px;">
+  <!-- Background image -->
+  <div id="hero-bg" class="absolute inset-0 z-0">
+    <img id="hero-img" src="https://images.pexels.com/photos/1285625/pexels-photo-1285625.jpeg?auto=compress&cs=tinysrgb&w=1600" class="w-full h-full object-cover hero-img" alt="travel"/>
+    <div class="absolute inset-0 bg-black/45"></div>
+  </div>
+
+  <!-- Category Tabs -->
+
+    <!-- Booking Card -->
+    <div class="relative z-10 bg-white rounded-3xl shadow-2xl p-5 md:p-8 pb-16 max-w-[1400px] mx-4 lg:mx-auto w-[calc(100%-2rem)] lg:w-full" id="booking-card">
+      <!-- Tabs moved inside -->
+      <div class="relative flex items-center mb-6 group/tabs">
+        <button onclick="document.getElementById('category-tabs').scrollBy({left: -200, behavior: 'smooth'})" class="absolute -left-3 z-20 w-8 h-8 bg-white shadow-md rounded-full flex items-center justify-center text-gray-600 hover:text-red-500 transition-all opacity-0 group-hover/tabs:opacity-100 border border-gray-100">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>
+        </button>
+        
+        <div class="flex gap-2 overflow-x-auto pb-1 scrollbar-hide w-full" id="category-tabs">
+          <button onclick="setCategory('flights',this)" class="category-tab active flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold whitespace-nowrap border border-gray-100 text-gray-600 transition-all hover:bg-gray-50 [&.active]:bg-[#2d2383] [&.active]:text-white [&.active]:border-[#2d2383] shadow-sm">
+            <i class="fa-solid fa-plane"></i> Flights
+          </button>
+          <button onclick="setCategory('hotels',this)" class="category-tab flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold whitespace-nowrap border border-gray-100 text-gray-600 transition-all hover:bg-gray-50 [&.active]:bg-[#2d2383] [&.active]:text-white [&.active]:border-[#2d2383] shadow-sm">
+            <i class="fa-solid fa-hotel"></i> Hotels
+          </button>
+          <button onclick="setCategory('homestays',this)" class="category-tab flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold whitespace-nowrap border border-gray-100 text-gray-600 transition-all hover:bg-gray-50 [&.active]:bg-[#2d2383] [&.active]:text-white [&.active]:border-[#2d2383] shadow-sm">
+            <i class="fa-solid fa-house-chimney"></i> Villas & Homestays
+          </button>
+          <button onclick="setCategory('holidays',this)" class="category-tab flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold whitespace-nowrap border border-gray-100 text-gray-600 transition-all hover:bg-gray-50 [&.active]:bg-[#2d2383] [&.active]:text-white [&.active]:border-[#2d2383] shadow-sm">
+            <i class="fa-solid fa-suitcase-rolling"></i> Holiday Packages
+          </button>
+          <button onclick="setCategory('trains',this)" class="category-tab flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold whitespace-nowrap border border-gray-100 text-gray-600 transition-all hover:bg-gray-50 [&.active]:bg-[#2d2383] [&.active]:text-white [&.active]:border-[#2d2383] shadow-sm">
+            <i class="fa-solid fa-train"></i> Trains
+          </button>
+          <button onclick="setCategory('buses',this)" class="category-tab flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold whitespace-nowrap border border-gray-100 text-gray-600 transition-all hover:bg-gray-50 [&.active]:bg-[#2d2383] [&.active]:text-white [&.active]:border-[#2d2383] shadow-sm">
+            <i class="fa-solid fa-bus"></i> Buses
+          </button>
+          <button onclick="setCategory('cabs',this)" class="category-tab flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold whitespace-nowrap border border-gray-100 text-gray-600 transition-all hover:bg-gray-50 [&.active]:bg-[#2d2383] [&.active]:text-white [&.active]:border-[#2d2383] shadow-sm">
+            <i class="fa-solid fa-car"></i> Cabs
+          </button>
+          <button onclick="setCategory('tours',this)" class="category-tab flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold whitespace-nowrap border border-gray-100 text-gray-600 transition-all hover:bg-gray-50 [&.active]:bg-[#2d2383] [&.active]:text-white [&.active]:border-[#2d2383] shadow-sm">
+            <i class="fa-solid fa-map-location-dot"></i> Tours & Attractions
+          </button>
+          <button onclick="setCategory('cruise',this)" class="category-tab flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold whitespace-nowrap border border-gray-100 text-gray-600 transition-all hover:bg-gray-50 [&.active]:bg-[#2d2383] [&.active]:text-white [&.active]:border-[#2d2383] shadow-sm">
+            <i class="fa-solid fa-ship"></i> Cruise <span class="text-[10px] bg-red-400 text-white px-1.5 py-0.5 rounded font-bold ml-1">NEW</span>
+          </button>
+          <button onclick="setCategory('forex',this)" class="category-tab flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold whitespace-nowrap border border-gray-100 text-gray-600 transition-all hover:bg-gray-50 [&.active]:bg-[#2d2383] [&.active]:text-white [&.active]:border-[#2d2383] shadow-sm">
+            <i class="fa-solid fa-money-bill-transfer"></i> Forex
+          </button>
+          <button onclick="setCategory('insurance',this)" class="category-tab flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold whitespace-nowrap border border-gray-100 text-gray-600 transition-all hover:bg-gray-50 [&.active]:bg-[#2d2383] [&.active]:text-white [&.active]:border-[#2d2383] shadow-sm">
+            <i class="fa-solid fa-shield-halved"></i> Insurance
+          </button>
+          <button onclick="setCategory('visa',this)" class="category-tab flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold whitespace-nowrap border border-gray-100 text-gray-600 transition-all hover:bg-gray-50 [&.active]:bg-[#2d2383] [&.active]:text-white [&.active]:border-[#2d2383] shadow-sm">
+            <i class="fa-solid fa-passport"></i> Visa
+          </button>
+        </div>
+
+        <button onclick="document.getElementById('category-tabs').scrollBy({left: 200, behavior: 'smooth'})" class="absolute -right-3 z-20 w-8 h-8 bg-white shadow-md rounded-full flex items-center justify-center text-gray-600 hover:text-red-500 transition-all opacity-0 group-hover/tabs:opacity-100 border border-gray-100">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+
+      <!-- FLIGHTS FORM -->
+      <div id="form-flights" class="fade-in">
+        <div class="flex items-center gap-4 mb-5">
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input type="radio" name="trip-type" value="one-way" class="accent-[#2d2383]" checked onchange="toggleTripType('one-way')"> 
+            <span class="text-sm font-medium">One Way</span>
+          </label>
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input type="radio" name="trip-type" value="round" class="accent-[#2d2383]" onchange="toggleTripType('round')">
+            <span class="text-sm font-medium">Round Trip</span>
+          </label>
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input type="radio" name="trip-type" value="multi" class="accent-[#2d2383]" onchange="toggleTripType('multi')">
+            <span class="text-sm font-medium">Multi City</span>
+          </label>
+          <span class="max-[576px]:hidden ml-auto text-xs text-green-600 bg-green-50 border border-green-200 px-3 py-1 rounded-full font-medium">Book International & Domestic Flights</span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <!-- From -->
+          <div class="relative">
+            <div class="border border-gray-200 rounded-xl p-4 hover:border-[#2d2383] cursor-pointer transition-colors flex items-start gap-3">
+              <i class="fa-solid fa-location-dot mt-1 text-[#2d2383]"></i>
+              <div>
+                <div class="text-xs text-gray-500 mb-1">From</div>
+                <div class="text-xl font-bold text-gray-900">DEL</div>
+                <div class="text-xs text-gray-500 truncate">Indira Gandhi Intl, Delhi</div>
+              </div>
+            </div>
+            <!-- Swap Button -->
+            <button onclick="swapCities()" class="absolute -right-8 top-1/2 -translate-y-1/2 z-20 w-10 h-10 bg-white border border-gray-200 rounded-full flex items-center justify-center hover:border-[#2d2383] hover:text-[#2d2383] transition-all shadow-sm hidden md:flex">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+            </button>
+          </div>
+
+          <!-- To -->
+          <div class="border border-gray-200 rounded-xl p-4 hover:border-[#2d2383] cursor-pointer transition-colors ml-0 md:ml-2 flex items-start gap-3">
+            <i class="fa-solid fa-location-arrow mt-1 text-[#2d2383]"></i>
+            <div>
+              <div class="text-xs text-gray-500 mb-1">To</div>
+              <div class="text-xl font-bold text-gray-900">BOM</div>
+              <div class="text-xs text-gray-500 truncate">Chhatrapati Shivaji, Mumbai</div>
+            </div>
+          </div>
+
+          <!-- Departure & Return -->
+          <div id="date-grid" class="grid grid-cols-2 border border-gray-200 rounded-xl divide-x divide-gray-100 hover:border-[#2d2383] transition-colors">
+            <div class="p-4 cursor-pointer flex items-start gap-3">
+              <i class="fa-solid fa-calendar-days mt-1 text-[#2d2383]"></i>
+              <div>
+                <div class="text-xs text-gray-500 mb-1">Departure</div>
+                <div class="text-base font-bold text-gray-900">16 May '26</div>
+                <div class="text-[10px] text-gray-400 uppercase tracking-wider">Saturday</div>
+              </div>
+            </div>
+            <div class="p-4 cursor-pointer bg-gray-50/50 transition-opacity duration-300 opacity-40 pointer-events-none flex items-start gap-3" id="return-date-field">
+              <i class="fa-solid fa-calendar-check mt-1 text-[#2d2383]"></i>
+              <div>
+                <div class="text-xs text-gray-500 mb-1">Return</div>
+                <div class="text-base font-bold text-gray-400">Select Date</div>
+                <div class="text-[10px] text-gray-400 uppercase tracking-wider">Book Round Trip</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Travellers & Class -->
+          <div class="border border-gray-200 rounded-xl p-4 hover:border-[#2d2383] cursor-pointer transition-colors flex items-start gap-3">
+            <i class="fa-solid fa-users mt-1 text-[#2d2383]"></i>
+            <div>
+              <div class="text-xs text-gray-500 mb-1">Travellers & Class</div>
+              <div class="text-base font-bold">1 Traveller</div>
+              <div class="text-xs text-gray-400">Economy / Premium Economy</div>
+            </div>
+          </div>
+
+          <!-- Special Fares -->
+          <div class="border border-gray-200 rounded-xl p-4 bg-orange-50/30 border-orange-100">
+            <div class="text-[10px] text-orange-600 font-bold uppercase tracking-widest mb-2">Special Fares</div>
+            <div class="flex flex-wrap gap-1" id="special-fares-list">
+              <span onclick="setSpecialFare(this)" class="special-fare-tag active text-[10px] bg-white border border-gray-100 px-2 py-1 rounded-md cursor-pointer hover:border-[#2d2383] font-medium transition-all [&.active]:bg-[#2d2383] [&.active]:text-white [&.active]:border-[#2d2383]">Regular</span>
+              <span onclick="setSpecialFare(this)" class="special-fare-tag text-[10px] bg-white border border-gray-100 px-2 py-1 rounded-md cursor-pointer hover:border-[#2d2383] font-medium transition-all [&.active]:bg-[#2d2383] [&.active]:text-white [&.active]:border-[#2d2383]">Student</span>
+              <span onclick="setSpecialFare(this)" class="special-fare-tag text-[10px] bg-white border border-gray-100 px-2 py-1 rounded-md cursor-pointer hover:border-[#2d2383] font-medium transition-all [&.active]:bg-[#2d2383] [&.active]:text-white [&.active]:border-[#2d2383]">Senior</span>
+            </div>
+          </div>
+
+          <!-- Referral Code -->
+          <div class="border border-gray-200 rounded-xl p-4 hover:border-[#2d2383] transition-colors flex items-start gap-3">
+            <i class="fa-solid fa-tag mt-1 text-[#2d2383]"></i>
+            <div class="w-full">
+              <div class="text-xs text-gray-500 mb-1">Promo / Referral Code</div>
+              <input type="text" placeholder="Enter code" class="w-full bg-transparent border-none p-0 text-base font-bold placeholder:text-gray-300 focus:ring-0 text-gray-900 uppercase">
+            </div>
+          </div>
+        </div>
+        <div class="flex flex-col sm:flex-row items-center gap-3 mt-6">
+          <label class="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
+            <input type="checkbox" class="accent-[#2d2383]"> 
+            <span>Add <strong>Price Drop Protection</strong></span>
+            <span class="text-xs text-blue-500 underline cursor-pointer">View Details</span>
+          </label>
+        </div>
+        <button class="w-max absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-[21px] lg:translate-y-[-9px] primary-color hover:bg-[#1e175a] text-white px-12 py-3.5 rounded-xl font-bold text-base transition-all shadow-xl hover:shadow-2xl z-30 flex items-center gap-2">
+          <span>Search Flights</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+
+      <!-- HOTELS FORM -->
+      <div id="form-hotels" class="hidden fade-in">
+        <div class="flex gap-4 mb-5">
+          <button class="text-sm font-semibold text-red-500 border-b-2 border-red-500 pb-1">Hotels</button>
+          <button class="text-sm font-medium text-gray-500 pb-1">Hostels</button>
+          <button class="text-sm font-medium text-gray-500 pb-1">Villa & Apartments</button>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
+          <div class="md:col-span-2 border border-gray-200 rounded-xl p-3 hover:border-red-400 cursor-pointer">
+            <div class="text-xs text-gray-500 mb-1">City, Area or Property</div>
+            <input type="text" id="hotel-city-input" value="Mumbai" class="w-full text-base font-bold bg-transparent border-none outline-none focus:ring-0 p-0" placeholder="Where are you going?">
+            <div class="text-xs text-gray-500">India</div>
+          </div>
+          <div class="border border-gray-200 rounded-xl p-3 hover:border-red-400 cursor-pointer">
+            <div class="text-xs text-gray-500 mb-1">Check-in</div>
+            <div class="text-base font-bold">16 May '26</div>
+            <div class="text-xs text-gray-500">Saturday</div>
+          </div>
+          <div class="border border-gray-200 rounded-xl p-3 hover:border-red-400 cursor-pointer">
+            <div class="text-xs text-gray-500 mb-1">Check-out</div>
+            <div class="text-base font-bold">18 May '26</div>
+            <div class="text-xs text-gray-500">Monday · 2 Nights</div>
+          </div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mt-3">
+          <div class="border border-gray-200 rounded-xl p-3 hover:border-red-400 cursor-pointer">
+            <div class="text-xs text-gray-500 mb-1">Rooms & Guests</div>
+            <div class="text-base font-bold">1 Room, 2 Adults</div>
+            <div class="text-xs text-gray-500">0 Children</div>
+          </div>
+          <div class="border border-gray-200 rounded-xl p-3 bg-blue-50 border-blue-200">
+            <div class="text-xs text-blue-600 font-semibold mb-1">HAVE GST NUMBER?</div>
+            <div class="text-sm font-medium text-blue-700">Upto 10% Extra Savings!</div>
+            <div class="text-xs text-gray-500">For business travellers</div>
+          </div>
+          <div class="flex items-end">
+          </div>
+        </div>
+        <button onclick="loadHotels(document.getElementById('hotel-city-input').value); document.getElementById('hotels-grid').closest('section').scrollIntoView({behavior:'smooth'})" class="w-max absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-[21px] lg:translate-y-[-9px] primary-color hover:bg-[#1e175a] text-white px-12 py-3.5 rounded-xl font-bold text-base transition-all shadow-xl hover:shadow-2xl z-30 flex items-center gap-2">
+          <span>Search Hotels</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+
+      <!-- HOMESTAYS FORM -->
+      <div id="form-homestays" class="hidden fade-in">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
+          <div class="md:col-span-2 border border-gray-200 rounded-xl p-3 hover:border-red-400 cursor-pointer">
+            <div class="text-xs text-gray-500 mb-1">Location</div>
+            <div class="text-base font-bold">Goa, India</div>
+            <div class="text-xs text-gray-500">Beach Villas & Homestays</div>
+          </div>
+          <div class="border border-gray-200 rounded-xl p-3 hover:border-red-400 cursor-pointer">
+            <div class="text-xs text-gray-500 mb-1">Check-in</div>
+            <div class="text-base font-bold">20 May '26</div>
+          </div>
+          <div class="border border-gray-200 rounded-xl p-3 hover:border-red-400 cursor-pointer">
+            <div class="text-xs text-gray-500 mb-1">Check-out</div>
+            <div class="text-base font-bold">25 May '26</div>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-3">
+          <div class="border border-gray-200 rounded-xl p-3">
+            <div class="text-xs text-gray-500 mb-1">Property Type</div>
+            <div class="text-sm font-bold">Villa</div>
+          </div>
+          <div class="border border-gray-200 rounded-xl p-3">
+            <div class="text-xs text-gray-500 mb-1">Guests</div>
+            <div class="text-sm font-bold">4 Adults</div>
+          </div>
+          <div class="md:col-span-2 flex items-end">
+          </div>
+        </div>
+        <button class="w-max absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-[21px] lg:translate-y-[-9px] primary-color hover:bg-[#1e175a] text-white px-12 py-3.5 rounded-xl font-bold text-base transition-all shadow-xl hover:shadow-2xl z-30 flex items-center gap-2">
+          <span>Search Villas</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+
+      <!-- HOLIDAYS FORM -->
+      <div id="form-holidays" class="hidden fade-in">
+        <div class="flex gap-3 mb-5">
+          <button class="text-sm font-semibold text-red-500 border-b-2 border-red-500 pb-1">India Packages</button>
+          <button class="text-sm text-gray-500 pb-1">International</button>
+          <button class="text-sm text-gray-500 pb-1">Honeymoon</button>
+          <button class="text-sm text-gray-500 pb-1">Adventure</button>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+          <div class="border border-gray-200 rounded-xl p-3 hover:border-red-400 cursor-pointer">
+            <div class="text-xs text-gray-500 mb-1">Destination</div>
+            <div class="text-base font-bold">Rajasthan</div>
+            <div class="text-xs text-gray-500">Cultural Heritage Tour</div>
+          </div>
+          <div class="border border-gray-200 rounded-xl p-3 hover:border-red-400 cursor-pointer">
+            <div class="text-xs text-gray-500 mb-1">Travel Date</div>
+            <div class="text-base font-bold">Jun '26</div>
+            <div class="text-xs text-gray-500">Flexible ± 1 week</div>
+          </div>
+          <div class="border border-gray-200 rounded-xl p-3 hover:border-red-400 cursor-pointer">
+            <div class="text-xs text-gray-500 mb-1">Duration & Travellers</div>
+            <div class="text-base font-bold">5N / 6D · 2 Adults</div>
+          </div>
+        </div>
+        <button class="w-max absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-[21px] lg:translate-y-[-9px] primary-color hover:bg-[#1e175a] text-white px-12 py-3.5 rounded-xl font-bold text-base transition-all shadow-xl hover:shadow-2xl z-30 flex items-center gap-2">
+          <span>Search Holiday Packages</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+
+      <!-- TRAINS FORM -->
+      <div id="form-trains" class="hidden fade-in">
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-3">
+          <div class="md:col-span-2 border border-gray-200 rounded-xl p-3 hover:border-red-400 cursor-pointer">
+            <div class="text-xs text-gray-500 mb-1">From Station</div>
+            <div class="text-base font-bold">NDLS — New Delhi</div>
+          </div>
+          <div class="flex items-center justify-center">
+            <button class="w-10 h-10 border-2 border-gray-200 rounded-full flex items-center justify-center hover:border-red-400 hover:text-red-500 transition-colors">⇌</button>
+          </div>
+          <div class="md:col-span-2 border border-gray-200 rounded-xl p-3 hover:border-red-400 cursor-pointer">
+            <div class="text-xs text-gray-500 mb-1">To Station</div>
+            <div class="text-base font-bold">BCT — Mumbai Central</div>
+          </div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mt-3">
+          <div class="border border-gray-200 rounded-xl p-3 hover:border-red-400 cursor-pointer">
+            <div class="text-xs text-gray-500 mb-1">Journey Date</div>
+            <div class="text-base font-bold">20 May '26</div>
+          </div>
+          <div class="border border-gray-200 rounded-xl p-3 hover:border-red-400 cursor-pointer">
+            <div class="text-xs text-gray-500 mb-1">Class</div>
+            <div class="text-base font-bold">3rd AC (3A)</div>
+          </div>
+        </div>
+        <button class="w-max absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-[21px] lg:translate-y-[-9px] primary-color hover:bg-[#1e175a] text-white px-12 py-3.5 rounded-xl font-bold text-base transition-all shadow-xl hover:shadow-2xl z-30 flex items-center gap-2">
+          <span>Search Trains</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+
+      <!-- BUSES FORM -->
+      <div id="form-buses" class="hidden fade-in">
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-3">
+          <div class="md:col-span-2 border border-gray-200 rounded-xl p-3 hover:border-red-400 cursor-pointer">
+            <div class="text-xs text-gray-500 mb-1">From</div>
+            <div class="text-base font-bold">Delhi</div>
+          </div>
+          <div class="flex items-center justify-center">
+            <button class="w-10 h-10 border-2 border-gray-200 rounded-full flex items-center justify-center hover:border-red-400 hover:text-red-500">⇌</button>
+          </div>
+          <div class="md:col-span-2 border border-gray-200 rounded-xl p-3 hover:border-red-400 cursor-pointer">
+            <div class="text-xs text-gray-500 mb-1">To</div>
+            <div class="text-base font-bold">Agra</div>
+          </div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mt-3">
+          <div class="border border-gray-200 rounded-xl p-3 hover:border-red-400 cursor-pointer">
+            <div class="text-xs text-gray-500 mb-1">Date</div>
+            <div class="text-base font-bold">18 May '26</div>
+          </div>
+          <div class="border border-gray-200 rounded-xl p-3 bg-orange-50">
+            <div class="text-xs text-orange-600 font-semibold">⚡ AC Buses Available</div>
+            <div class="text-xs text-gray-500 mt-1">Sleeper · Seater · Volvo</div>
+          </div>
+        </div>
+        <button class="w-max absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-[21px] lg:translate-y-[-9px] primary-color hover:bg-[#1e175a] text-white px-12 py-3.5 rounded-xl font-bold text-base transition-all shadow-xl hover:shadow-2xl z-30 flex items-center gap-2">
+          <span>Search Buses</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+
+      <!-- CABS FORM -->
+      <div id="form-cabs" class="hidden fade-in">
+        <div class="flex gap-4 mb-5">
+          <button class="text-sm font-semibold text-red-500 border-b-2 border-red-500 pb-1">Outstation</button>
+          <button class="text-sm text-gray-500 pb-1">Local</button>
+          <button class="text-sm text-gray-500 pb-1">Airport Transfer</button>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
+          <div class="border border-gray-200 rounded-xl p-3 hover:border-red-400 cursor-pointer">
+            <div class="text-xs text-gray-500 mb-1">Pickup</div>
+            <div class="text-base font-bold">New Delhi</div>
+          </div>
+          <div class="border border-gray-200 rounded-xl p-3 hover:border-red-400 cursor-pointer">
+            <div class="text-xs text-gray-500 mb-1">Drop</div>
+            <div class="text-base font-bold">Jaipur</div>
+          </div>
+          <div class="border border-gray-200 rounded-xl p-3 hover:border-red-400 cursor-pointer">
+            <div class="text-xs text-gray-500 mb-1">Pickup Date & Time</div>
+            <div class="text-base font-bold">17 May '26 · 8:00 AM</div>
+          </div>
+        </div>
+        <button class="w-max absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-[21px] lg:translate-y-[-9px] primary-color hover:bg-[#1e175a] text-white px-12 py-3.5 rounded-xl font-bold text-base transition-all shadow-xl hover:shadow-2xl z-30 flex items-center gap-2">
+          <span>Search Cabs</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+
+      <!-- TOURS FORM -->
+      <div id="form-tours" class="hidden fade-in">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+          <div class="border border-gray-200 rounded-xl p-3 hover:border-red-400 cursor-pointer">
+            <div class="text-xs text-gray-500 mb-1">Destination / Attraction</div>
+            <div class="text-base font-bold">Taj Mahal, Agra</div>
+          </div>
+          <div class="border border-gray-200 rounded-xl p-3 hover:border-red-400 cursor-pointer">
+            <div class="text-xs text-gray-500 mb-1">Date</div>
+            <div class="text-base font-bold">20 May '26</div>
+          </div>
+        </div>
+        <button class="w-max absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-[21px] lg:translate-y-[-9px] primary-color hover:bg-[#1e175a] text-white px-12 py-3.5 rounded-xl font-bold text-base transition-all shadow-xl hover:shadow-2xl z-30 flex items-center gap-2">
+          <span>Explore Tours</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+
+      <!-- CRUISE FORM -->
+      <div id="form-cruise" class="hidden fade-in">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
+          <div class="border border-gray-200 rounded-xl p-3 hover:border-red-400 cursor-pointer">
+            <div class="text-xs text-gray-500 mb-1">Departure Port</div>
+            <div class="text-base font-bold">Mumbai</div>
+          </div>
+          <div class="border border-gray-200 rounded-xl p-3 hover:border-red-400 cursor-pointer">
+            <div class="text-xs text-gray-500 mb-1">Destination</div>
+            <div class="text-base font-bold">Maldives Cruise</div>
+          </div>
+          <div class="border border-gray-200 rounded-xl p-3 hover:border-red-400 cursor-pointer">
+            <div class="text-xs text-gray-500 mb-1">Travel Month</div>
+            <div class="text-base font-bold">June '26</div>
+          </div>
+        </div>
+        <button class="w-max absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-[21px] lg:translate-y-[-9px] primary-color hover:bg-[#1e175a] text-white px-12 py-3.5 rounded-xl font-bold text-base transition-all shadow-xl hover:shadow-2xl z-30 flex items-center gap-2">
+          <span>Search Cruises</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+
+      <!-- FOREX FORM -->
+      <div id="form-forex" class="hidden fade-in">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
+          <div class="border border-gray-200 rounded-xl p-3 hover:border-red-400 cursor-pointer">
+            <div class="text-xs text-gray-500 mb-1">Currency Needed</div>
+            <div class="text-base font-bold">USD – US Dollar</div>
+          </div>
+          <div class="border border-gray-200 rounded-xl p-3 hover:border-red-400 cursor-pointer">
+            <div class="text-xs text-gray-500 mb-1">Amount (INR)</div>
+            <div class="text-base font-bold">₹ 50,000</div>
+          </div>
+          <div class="border border-gray-200 rounded-xl p-3 bg-green-50 border-green-200">
+            <div class="text-xs text-green-600 font-semibold">LIVE RATE</div>
+            <div class="text-sm font-bold text-green-700">1 USD = ₹ 83.45</div>
+            <div class="text-xs text-gray-500">Updated 2 min ago</div>
+          </div>
+        </div>
+        <button class="absolute left-1/2 -translate-x-1/2 -bottom-6 primary-color hover:bg-[#1e175a] text-white px-12 py-3.5 rounded-xl font-bold text-base transition-all shadow-xl hover:shadow-2xl z-30 flex items-center gap-2">
+          <span>Get Forex Card</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+
+      <!-- INSURANCE FORM -->
+      <div id="form-insurance" class="hidden fade-in">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
+          <div class="border border-gray-200 rounded-xl p-3 hover:border-red-400 cursor-pointer">
+            <div class="text-xs text-gray-500 mb-1">Destination</div>
+            <div class="text-base font-bold">Europe</div>
+          </div>
+          <div class="border border-gray-200 rounded-xl p-3 hover:border-red-400 cursor-pointer">
+            <div class="text-xs text-gray-500 mb-1">Travel Dates</div>
+            <div class="text-base font-bold">16 – 30 May '26</div>
+          </div>
+          <div class="border border-gray-200 rounded-xl p-3 hover:border-red-400 cursor-pointer">
+            <div class="text-xs text-gray-500 mb-1">Travellers</div>
+            <div class="text-base font-bold">2 Adults</div>
+          </div>
+        </div>
+        <button class="absolute left-1/2 -translate-x-1/2 -bottom-6 primary-color hover:bg-[#1e175a] text-white px-12 py-3.5 rounded-xl font-bold text-base transition-all shadow-xl hover:shadow-2xl z-30 flex items-center gap-2">
+          <span>Get Insured</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+
+      <!-- VISA FORM -->
+      <div id="form-visa" class="hidden fade-in">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
+          <div class="border border-gray-200 rounded-xl p-3 hover:border-red-400 cursor-pointer">
+            <div class="text-xs text-gray-500 mb-1">Destination Country</div>
+            <div class="text-base font-bold">United Kingdom</div>
+          </div>
+          <div class="border border-gray-200 rounded-xl p-3 hover:border-red-400 cursor-pointer">
+            <div class="text-xs text-gray-500 mb-1">Travel Date</div>
+            <div class="text-base font-bold">15 Jun '26</div>
+          </div>
+          <div class="border border-gray-200 rounded-xl p-3 bg-blue-50 border-blue-200">
+            <div class="text-xs text-blue-600 font-semibold">VISA ON ARRIVAL</div>
+            <div class="text-xs text-gray-500 mt-1">Check eligibility instantly</div>
+          </div>
+        </div>
+        <button class="absolute left-1/2 -translate-x-1/2 -bottom-6 primary-color hover:bg-[#1e175a] text-white px-12 py-3.5 rounded-xl font-bold text-base transition-all shadow-xl hover:shadow-2xl z-30 flex items-center gap-2">
+          <span>Apply Visa</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+
+    </div><!-- /booking-card -->
+  </div>
+</section>
+
+<!-- BANNER SWIPER -->
+<section class="max-w-[1400px] mx-3 lg:mx-auto mt-8 mb-4">    <div class="swiper banner-swiper rounded-2xl overflow-hidden">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide">
+        <img src="assets/img/img-001.jpg" alt="Banner 1" class="w-full h-auto object-cover rounded-none md:rounded-2xl">
+      </div>
+      <div class="swiper-slide">
+        <img src="assets/img/img-002.jpg" alt="Banner 2" class="w-full h-auto object-cover rounded-none md:rounded-2xl">
+      </div>
+            <div class="swiper-slide">
+        <img src="assets/img/img-003.jpg" alt="Banner 2" class="w-full h-auto object-cover rounded-none md:rounded-2xl">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OFFERS STRIP -->
+
+<!-- TRENDING DESTINATIONS -->
+<section class="max-w-[1400px] mx-auto px-4 py-12">
+  <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-3 mb-6">
+    <div>
+      <h2 class="font-display text-2xl font-800 text-gray-900">Trending Destinations</h2>
+      <p class="text-sm text-gray-500 mt-1">Most booked this week across India</p>
+    </div>
+  </div>
+  <div class="swiper trending-swiper !pb-12">
+    <div class="swiper-wrapper" id="trending-grid">
+      <!-- Populated by JS -->
+    </div>
+    <div class="swiper-scrollbar !w-1/4 !left-1/2 !-translate-x-1/2 !bottom-2 swiper-scrollbar-horizontal"></div>
+  </div>
+</section>
+
+<!-- HOLIDAY PACKAGES -->
+<section class="bg-gray-50 py-12">
+  <div class="max-w-[1400px] mx-auto px-4 overflow-hidden">
+    <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-3 mb-6">
+      <div>
+        <h2 class="font-display text-2xl font-800 text-gray-900">Holiday Packages</h2>
+        <p class="text-sm text-gray-500 mt-1">Handpicked packages with flights + hotel included</p>
+      </div>
+      <div class="hidden sm:flex gap-2" id="package-filters">
+        <button onclick="loadPackages('India Holiday Packages'); setActiveFilter(this)" class="package-filter text-xs primary-color text-white px-3 py-1.5 rounded-full font-medium transition-all">All India</button>
+        <button onclick="loadPackages('Goa Kerala Beach Packages'); setActiveFilter(this)" class="package-filter text-xs bg-white text-gray-600 border border-gray-200 px-3 py-1.5 rounded-full font-medium hover:border-[#2d2383] transition-all">Beach</button>
+        <button onclick="loadPackages('Himalayas Hill Station Packages'); setActiveFilter(this)" class="package-filter text-xs bg-white text-gray-600 border border-gray-200 px-3 py-1.5 rounded-full font-medium hover:border-[#2d2383] transition-all">Himalayas</button>
+        <button onclick="loadPackages('South India Temple Tours'); setActiveFilter(this)" class="package-filter text-xs bg-white text-gray-600 border border-gray-200 px-3 py-1.5 rounded-full font-medium hover:border-[#2d2383] transition-all">South India</button>
+      </div>
+    </div>
+    <div class="swiper packages-mobile-swiper !pb-12 md:!pb-0 overflow-visible sm:overflow-hidden">
+      <div class="swiper-wrapper md:!grid md:!grid-cols-2 lg:!grid-cols-3 md:!gap-6 md:!transform-none" id="packages-grid">
+        <!-- Populated by JS -->
+      </div>
+      <div class="swiper-scrollbar !w-1/4 !left-1/2 !-translate-x-1/2 !bottom-2 swiper-scrollbar-horizontal md:!hidden"></div>
+    </div>
+  </div>
+</section>
+
+<!-- FLIGHT DEALS -->
+<section class="max-w-[1400px] mx-auto px-4 py-12">
+  <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-3 mb-6">
+    <div>
+      <h2 class="font-display text-2xl font-800 text-gray-900">Cheapest Flight Deals</h2>
+      <p class="text-sm text-gray-500 mt-1">From Delhi · One-way fares</p>
+    </div>
+        <div class="hidden sm:flex gap-2">
+      <button class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center hover:bg-red-50 hover:border-red-200 transition-all">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+      </button>
+      <button class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center hover:bg-red-50 hover:border-red-200 transition-all">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="relative group">
+    <div class="swiper flight-deals-swiper !pb-12">
+      <div class="swiper-wrapper" id="flight-deals-grid">
+        <!-- Populated by JS -->
+      </div>
+      <div class="swiper-scrollbar !w-1/4 !left-1/2 !-translate-x-1/2 !bottom-2"></div>
+    </div>
+</div>
+</section>
+
+<!-- IRCTC TOURISM SECTION -->
+<section class="max-w-[1400px] mx-auto px-4 py-12">
+  <div class="flex items-center justify-between mb-8">
+    <div>
+      <h2 class="font-display text-2xl font-800 text-gray-900">IRCTC Tourism Specials</h2>
+      <p class="text-sm text-gray-500 mt-1 font-medium">Reliable, affordable and all-inclusive packages by Indian Railways</p>
+    </div>
+    <div class="hidden sm:flex gap-2">
+      <button class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center hover:bg-red-50 hover:border-red-200 transition-all">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+      </button>
+      <button class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center hover:bg-red-50 hover:border-red-200 transition-all">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+  </div>
+  
+  <div class="swiper irctc-swiper !pb-10">
+    <div class="swiper-wrapper" id="irctc-grid">
+      <!-- Populated by JS -->
+    </div>
+    <div class="swiper-scrollbar !w-1/4 !left-1/2 !-translate-x-1/2 !bottom-0"></div>
+  </div>
+</section>
+
+<!-- HOTEL DEALS -->
+<section class="bg-white py-12">
+  <div class="max-w-[1400px] mx-auto px-4 overflow-hidden">
+    <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-3 mb-6">
+      <div>
+        <h2 class="font-display text-2xl font-800 text-gray-900">Top Hotel Deals</h2>
+        <p class="text-sm text-gray-500 mt-1">Handpicked stays with great reviews</p>
+      </div>
+    </div>
+    <div class="swiper hotels-mobile-swiper !pb-12 md:!pb-0 overflow-visible sm:overflow-hidden">
+      <div class="swiper-wrapper md:!grid md:!grid-cols-2 lg:!grid-cols-3 md:!gap-6 md:!transform-none" id="hotels-grid">
+        <!-- Populated by JS -->
+      </div>
+      <div class="swiper-pagination md:!hidden"></div>
+    </div>
+  </div>
+</section>
+
+<!-- SPECIAL OFFERS BANNER -->
+<section class="max-w-[1400px] mx-auto px-4 py-12 relative group">
+  <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-3 mb-6">
+    <h2 class="font-display text-3xl font-800 text-gray-900">Exclusive Offers For You</h2>
+    <div class="hidden sm:flex gap-2">
+      <button onclick="document.getElementById('offers-scroll').scrollBy({left: -320, behavior: 'smooth'})" class="w-10 h-10 rounded-full border border-gray-200 bg-white flex items-center justify-center hover:bg-gray-50 hover:shadow-md transition-all text-gray-600 shadow-sm">
+        <i class="fa-solid fa-chevron-left"></i>
+      </button>
+      <button onclick="document.getElementById('offers-scroll').scrollBy({left: 320, behavior: 'smooth'})" class="w-10 h-10 rounded-full border border-gray-200 bg-white flex items-center justify-center hover:bg-gray-50 hover:shadow-md transition-all text-gray-600 shadow-sm">
+        <i class="fa-solid fa-chevron-right"></i>
+      </button>
+    </div>
+  </div>
+  
+  <div class="relative w-full my-auto mx-0">
+    <style>
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+    </style>
+    <div id="offers-scroll" class="flex overflow-x-auto snap-x snap-mandatory scroll-smooth no-scrollbar pb-4" style="gap:20px; scrollbar-width: none; -ms-overflow-style: none;">
+      
+      <!-- Offer 1 -->
+      <div class="shrink-0 overflow-hidden rounded-2xl h-auto transition-transform hover:-translate-y-1 duration-300 cursor-pointer" style="scroll-snap-align:start">
+        <img alt="HDFC Offer" loading="lazy" width="295" height="180" class="object-cover h-[180px] w-[295px]" src="assets/img/offers/c12b54020c3b56cb3e4e463ea648e072-owadr.webp">
+      </div>
+      
+      <!-- Offer 2 -->
+      <div class="shrink-0 overflow-hidden rounded-2xl h-auto transition-transform hover:-translate-y-1 duration-300 cursor-pointer" style="scroll-snap-align:start">
+        <img alt="ICICI Offer" loading="lazy" width="295" height="180" class="object-cover h-[180px] w-[295px]" src="assets/img/offers/880c2ea6ea53008c7edcc838f6a082a5-vfoli.webp">
+      </div>
+      
+      <!-- Offer 3 -->
+      <div class="shrink-0 overflow-hidden rounded-2xl h-auto transition-transform hover:-translate-y-1 duration-300 cursor-pointer" style="scroll-snap-align:start">
+        <img alt="SBI Offer" loading="lazy" width="295" height="180" class="object-cover h-[180px] w-[295px]" src="assets/img/offers/4853ad01d251f4075cb8741d90f1af09-vuhjt.webp">
+      </div>
+      
+      <!-- Offer 4 -->
+      <div class="shrink-0 overflow-hidden rounded-2xl h-auto transition-transform hover:-translate-y-1 duration-300 cursor-pointer" style="scroll-snap-align:start">
+        <img alt="Jewar Airport" loading="lazy" width="295" height="180" class="object-cover h-[180px] w-[295px]" src="assets/img/offers/cc80560a72eb476a7d75c53c8d4f7914-lpozf.webp">
+      </div>
+      
+      <!-- Offer 5 -->
+      <div class="shrink-0 overflow-hidden rounded-2xl h-auto transition-transform hover:-translate-y-1 duration-300 cursor-pointer" style="scroll-snap-align:start">
+        <img alt="Kotak Offer" loading="lazy" width="295" height="180" class="object-cover h-[180px] w-[295px]" src="assets/img/offers/fa78ea6fb8feff0bb6f0fbdceb42d753-xegzt.webp">
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+<!-- EXPLORE SECTION -->
+<section class="bg-gray-50 py-12">
+  <div class="max-w-[1400px] mx-auto px-4">
+    <h2 class="font-display text-3xl font-800 text-gray-900 mb-2">Explore & Discover</h2>
+    <p class="text-sm text-gray-500 mb-6">Travel guides, tips & inspiration for your next adventure</p>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5" id="explore-grid">
+      <!-- Populated by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- APP & QUERY SECTION -->
+<section class="max-w-[1400px] mx-auto px-4 py-4 border-t border-gray-100">
+  <div class="bg-white rounded-[2.5rem] border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] overflow-hidden">
+    <div class="grid grid-cols-1 lg:grid-cols-2 items-center">
+      
+      <!-- Mobile App Feature Side -->
+      <div class="rounded-2xl bg-gradient-to-br from-gray-50 to-gray-100 h-full w-fit flex flex-col justify-center items-center text-center relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-64 h-64 bg-red-50 rounded-full blur-3xl opacity-50 -translate-y-1/2 translate-x-1/3"></div>
+        <div class="absolute bottom-0 left-0 w-64 h-64 bg-[#2d2383]/10 rounded-full blur-3xl opacity-50 translate-y-1/3 -translate-x-1/3"></div>
+        
+        <div class="relative z-10 w-full max-w-lg mx-auto">
+          <div class="absolute inset-0 bg-[#2d2383]/10 blur-3xl rounded-2xl"></div>
+          <img src="assets/img/mobile-info.png" alt="TripEase App" class="relative w-full h-auto object-contain drop-shadow-2xl hover:-translate-y-2 transition-transform duration-500">
+        </div>
+      </div>
+
+      <!-- Custom Query Form Side -->
+      <div class="rounded-2xl p-5 md:p-8 h-full flex flex-col justify-center bg-white relative z-10">
+        <img src="https://upload.wikimedia.org/wikipedia/en/thumb/4/45/IRCTC_Logo.svg/1280px-IRCTC_Logo.svg.png" alt="IRCTC Logo" class="absolute top-6 right-6 h-12 w-auto object-contain opacity-90 drop-shadow-sm">
+        <div class="mb-10 mt-2">
+          <div class="w-12 h-12 bg-[#2d2383]/10 text-[#2d2383] rounded-2xl flex items-center justify-center text-xl mb-6 shadow-sm border border-[#2d2383]/10">
+            <i class="fa-solid fa-headset"></i>
+          </div>
+          <h3 class="font-display text-3xl font-800 text-gray-900 mb-2">Have a Custom Query?</h3>
+          <p class="text-sm text-gray-500 leading-relaxed">Share your requirements and our travel experts will design a perfect, personalized itinerary just for you.</p>
+        </div>
+        
+        <form class="space-y-6" onsubmit="event.preventDefault(); alert('Query submitted successfully!')">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="space-y-2">
+              <label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Full Name</label>
+              <input type="text" placeholder="Rohan Sharma" class="w-full bg-gray-50 border border-gray-100 rounded-xl px-5 py-3.5 text-sm focus:bg-white focus:ring-2 focus:ring-[#2d2383] outline-none transition-all shadow-inner">
+            </div>
+            <div class="space-y-2">
+              <label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Email Address</label>
+              <input type="email" placeholder="rohan@example.com" class="w-full bg-gray-50 border border-gray-100 rounded-xl px-5 py-3.5 text-sm focus:bg-white focus:ring-2 focus:ring-[#2d2383] outline-none transition-all shadow-inner">
+            </div>
+          </div>
+          
+          <div class="space-y-2">
+            <label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Phone Number</label>
+            <div class="flex shadow-inner rounded-xl overflow-hidden">
+              <span class="inline-flex items-center px-5 border border-r-0 border-gray-100 bg-gray-100 text-gray-500 text-sm font-bold">+91</span>
+              <input type="tel" placeholder="98765 43210" class="w-full bg-gray-50 border border-gray-100 px-5 py-3.5 text-sm focus:bg-white focus:ring-2 focus:ring-[#2d2383] outline-none transition-all">
+            </div>
+          </div>
+          
+          <div class="space-y-2">
+            <label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Your Message / Travel Plan</label>
+            <textarea rows="4" placeholder="Tell us about your dream destination, budget, and travel dates..." class="w-full bg-gray-50 border border-gray-100 rounded-xl px-5 py-3.5 text-sm focus:bg-white focus:ring-2 focus:ring-[#2d2383] outline-none transition-all resize-none shadow-inner"></textarea>
+          </div>
+          
+          <button type="submit" class="w-full primary-color text-white py-4 rounded-xl text-sm font-bold hover:bg-white hover:text-[var(--primary-color)] border border-transparent hover:border-[var(--primary-color)] transition-all flex items-center justify-center gap-2 group mt-4">
+            <span>Send My Query</span>
+            <i class="fa-solid fa-paper-plane text-xs group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"></i>
+          </button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FAQ SECTION -->
+<section class="py-4 border-t border-gray-100">
+  <div class="max-w-[1400px] mx-auto px-4">
+    <div class="text-center mb-10">
+      <h2 class="font-display text-3xl font-800 text-gray-900">FAQ</h2>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mx-auto">
+      <div class="space-y-4">
+        <details class="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm group [&_summary::-webkit-details-marker]:hidden cursor-pointer hover:border-gray-200 transition-colors">
+          <summary class="flex justify-between items-center font-bold text-gray-900 list-none outline-none">
+            <span>How can I book an IRCTC tour package?</span>
+            <span class="transition group-open:rotate-180 text-gray-400">
+              <svg fill="none" height="20" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="20"><path d="M19 9l-7 7-7-7"></path></svg>
+            </span>
+          </summary>
+          <div class="text-sm text-gray-600 mt-4 leading-relaxed pt-4 border-t border-gray-50">
+            Book the best tour packages easily on IRCTC’s official website. Click on ‘Holidays’ on the homepage and select ‘Packages’. Then choose from a range of land, air, and rail tour packages and book your dream holiday in a jiffy.
+          </div>
+        </details>
+
+        <details class="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm group [&_summary::-webkit-details-marker]:hidden cursor-pointer hover:border-gray-200 transition-colors">
+          <summary class="flex justify-between items-center font-bold text-gray-900 list-none outline-none">
+            <span>What does a tour package include?</span>
+            <span class="transition group-open:rotate-180 text-gray-400">
+              <svg fill="none" height="20" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="20"><path d="M19 9l-7 7-7-7"></path></svg>
+            </span>
+          </summary>
+          <div class="text-sm text-gray-600 mt-4 leading-relaxed pt-4 border-t border-gray-50">
+            A tour package is a complete product that includes a variety of services such as transport, accommodation, meals, etc. so that tourists can explore a destination hassle-free. A tour package can be customized according to the user’s requirements to include additional services such as those of a tour guide, road transfers, etc. Browse through a range of exciting tour packages on IRCTC Tourism and book the perfect holiday.
+          </div>
+        </details>
+
+        <details class="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm group [&_summary::-webkit-details-marker]:hidden cursor-pointer hover:border-gray-200 transition-colors">
+          <summary class="flex justify-between items-center font-bold text-gray-900 list-none outline-none">
+            <span>How can I book a hotel through IRCTC?</span>
+            <span class="transition group-open:rotate-180 text-gray-400">
+              <svg fill="none" height="20" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="20"><path d="M19 9l-7 7-7-7"></path></svg>
+            </span>
+          </summary>
+          <div class="text-sm text-gray-600 mt-4 leading-relaxed pt-4 border-t border-gray-50">
+            Visit the official IRCTC Tourism website and click on ‘IRCTC Hotels’ on the homepage. From budget hotels to deluxe stays, you will find a range of hotels that can be booked easily using your IRCTC account.
+          </div>
+        </details>
+      </div>
+
+      <div class="space-y-4">
+        <details class="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm group [&_summary::-webkit-details-marker]:hidden cursor-pointer hover:border-gray-200 transition-colors">
+          <summary class="flex justify-between items-center font-bold text-gray-900 list-none outline-none">
+            <span>How can I book my retiring room in IRCTC?</span>
+            <span class="transition group-open:rotate-180 text-gray-400">
+              <svg fill="none" height="20" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="20"><path d="M19 9l-7 7-7-7"></path></svg>
+            </span>
+          </summary>
+          <div class="text-sm text-gray-600 mt-4 leading-relaxed pt-4 border-t border-gray-50">
+            Retiring room facility is available for IRCTC users. All you need to do is go to the homepage of the IRCTC Tourism website, select ‘Retiring Rooms’ and then book a room of your choice. Once the booking process is complete, you will receive a confirmation on your registered number. In case of queries, you can write to retiringroom@irctc.co.in
+          </div>
+        </details>
+
+        <details class="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm group [&_summary::-webkit-details-marker]:hidden cursor-pointer hover:border-gray-200 transition-colors">
+          <summary class="flex justify-between items-center font-bold text-gray-900 list-none outline-none">
+            <span>Some of the famous religious IRCTC tour packages are?</span>
+            <span class="transition group-open:rotate-180 text-gray-400">
+              <svg fill="none" height="20" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="20"><path d="M19 9l-7 7-7-7"></path></svg>
+            </span>
+          </summary>
+          <div class="text-sm text-gray-600 mt-4 leading-relaxed pt-4 border-t border-gray-50">
+            IRCTC Tourism offers a wide array of tour packages for religious pilgrims. Some of the most popular ones include Dev Darshan Tour, Jyotirlinga Yatra with Shirdi Darshan and Statue of Unity, Dakshin Bharat Yatra with Balaji Darshan, Dakshin Bharat Yatra, Dakshin Bharat Aastha Yatra, Dwarkadhish Jyotirlinga Yatra, Jagannath Dham Tour, Temple Triangle of Tamil Nadu, Tirupati tour package, Ramayana Tour Package, and Mata Vaishno Devi Darshan among others.
+          </div>
+        </details>
+
+        <details class="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm group [&_summary::-webkit-details-marker]:hidden cursor-pointer hover:border-gray-200 transition-colors">
+          <summary class="flex justify-between items-center font-bold text-gray-900 list-none outline-none">
+            <span>How do I book a domestic and international tour package?</span>
+            <span class="transition group-open:rotate-180 text-gray-400">
+              <svg fill="none" height="20" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="20"><path d="M19 9l-7 7-7-7"></path></svg>
+            </span>
+          </summary>
+          <div class="text-sm text-gray-600 mt-4 leading-relaxed pt-4 border-t border-gray-50">
+            Both domestic and international tour packages are available on IRCTC Tourism. To get started with your booking, visit the official IRCTC Tourism website and below the search bar select domestic or international according to your requirement. Then click on ‘Search’ and you will be shown a list of well-planned packages. Alternatively, you can scroll to the bottom of the homepage and choose a popular destination from the list of domestic and international holidays.
+          </div>
+        </details>
+      </div>
+    </div>
+  
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="bg-gray-900 text-gray-400 pt-16 pb-12 rounded-b-[2.5rem] relative z-10">
+  <div class="max-w-[1400px] mx-auto px-4">
+    <!-- Main Links -->
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 mb-12 border-b border-gray-800 pb-12">
+      <!-- Services -->
+      <div>
+        <div class="text-white font-bold text-sm mb-4">Services</div>
+        <ul class="space-y-2 text-sm">
+          <li><a href="#" class="hover:text-white transition-colors">Flights</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Buses</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Hotels</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Retiring Rooms</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">e-Ticketing</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">e-Catering</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Travel Agents</a></li>
+          <li><a href="#" class="hover:text-white transition-colors leading-tight block">Empanelment for PAD items for Catering</a></li>
+        </ul>
+      </div>
+      <!-- Domestic Tours -->
+      <div>
+        <div class="text-white font-bold text-sm mb-4">Domestic Tours</div>
+        <ul class="space-y-2 text-sm">
+          <li><a href="#" class="hover:text-white transition-colors">Agra</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Andaman</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Goa</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Gujarat</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Kerala</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Ladakh</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Ooty</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Rajasthan</a></li>
+        </ul>
+      </div>
+      <!-- Pilgrimage Tours -->
+      <div>
+        <div class="text-white font-bold text-sm mb-4">Pilgrimage Tours</div>
+        <ul class="space-y-2 text-sm">
+          <li><a href="#" class="hover:text-white transition-colors">Chardham</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Puri</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Rameswaram</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Shirdi</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Tirupati</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Ujjain</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Vaishno Devi</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Varanasi</a></li>
+        </ul>
+      </div>
+      <!-- International Tours -->
+      <div>
+        <div class="text-white font-bold text-sm mb-4">International Tours</div>
+        <ul class="space-y-2 text-sm">
+          <li><a href="#" class="hover:text-white transition-colors">Europe</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Japan</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Nepal</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Singapore-Malaysia</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Sri Lanka</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Thailand</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">UAE</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Vietnam</a></li>
+        </ul>
+      </div>
+      <!-- Pan-India Tours -->
+      <div>
+        <div class="text-white font-bold text-sm mb-4">Pan-India Tours</div>
+        <ul class="space-y-2 text-sm">
+          <li><a href="#" class="hover:text-white transition-colors">East India</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">West India</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">North India</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">South India</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">North-East</a></li>
+        </ul>
+      </div>
+      <!-- About Us -->
+      <div>
+        <div class="text-white font-bold text-sm mb-4">About Us</div>
+        <ul class="space-y-2 text-sm">
+          <li><a href="#" class="hover:text-white transition-colors">About Us</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Bharat Gaurav</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Travel Advisory</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Media Corner</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Gallery</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Sitemap</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Blog</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">FAQ</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Privacy Policy</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Terms & Conditions</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Contact Us</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Useful Link</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- SEO Keywords block -->
+    <div class="text-[11px] leading-relaxed text-gray-500 text-justify">
+      Famous Places India | dubai tour packages | Bharat Yatra Holidays | Leh Ladakh Tour Package | domestic tours in india | Himalayan Golden Triangle tour | Honeymoon Packages in India | leh packages | Goa tour packages from kolkata by train | cheap tours from chennai | Shirdi Flight Package | Religious Tour Package | goa packages | golden triangle tour packages | cheap tours from ahmedabad | Holiday Destinations India | Tirupati Package | Dubai Tour Packages From Delhi | Travel Experience with Irctc | Jaipur Local Sightseeing | best railway journeys | Shirdi Darshanv Package | Holiday Packages from Delhi to Manali | Holy Ganga Darshan Tour | Online Package Booking | Rameshwaram Tour Packages | all india tour packages | Aastha Tour Package | Irctc Train Travel Services | Vaishno Devi Package | Rameswaram Kanniyakumari Package | Irctc Luxury Trains | Affordable Irctc Travel Services | Classical Khajuraho Tour | Holiday Deals | Irctc August Travel Packages | Irctc Travel Solutions | Holy Land Packages | ooty holiday trip | tirupati tour package | Divine Balaji Darshan Package | International Tour Packages Offered | Famous Tourist Places in India | Singapore Package | Delhi to leh tour package | Dubai Tour Packages From Ahmedabad | Leh Tourism | Holy Triangle of UP | Irctc One Stop Travel Solution | cheap tours from bangalore | Kolkata City Tour | kerala tour packages | Best Tour Packages in India | Irctc Travel Facilities | Ayodhya Tourism | shirdi tour package | Golden Triangle Tour Packages Cost | Irctc Tours Experience | tirupati balaji darshan yatra | Jyotirlinga Tour Package | Historical Maharashtra Tour | Goa Tour Packages by Train | discover green triangle tour north india | Dubai Holiday Packages | Domestic Tour Packages from Ahmedabad | Best holiday destinations in india | holiday packages | Goa Tour Package from Mumbai by Train | Rameshwaram Kanyakumari Tour Packages | delhi agra tour package cost | Best Places to Visit in India | Weekend Tour Package | Irctc Travel Facilities | Singapore Tour Package | india vacation packages | famous places in india | Dharmik Tour Package | pilgrimage special tour package | Irctc Travel Facilities | domestic tour packages in india | Karnataka Hill Stations Tour | Best Places in India | sri lanka tour package | Katra Tour package | devotional tour packages | Splendid Hyderabad Tour | Indian Holidays | Tirupati Balaji Train Ticket | Rajasthan Packages | Irctc Travel Services | North India Temple Tour Packages | Tour of South India | top tourist places india | New Year Packages | Hop on Hop off Goa Tour | Irctc Travel Festive Packages | Travel Packages | Irctc Comprehensive Travel Services | Gangasagar Puri Yatra | South India Tourist Places Packages | Bharat Darshan Tour | Seamless Travel Experience | Irctc Travel Booking Services | Irctc Services for Travel | tourism industry in india | Irctc Tour Packages India | Jaipur Sightseeing Package | Travel Services Irctc | Affordable Train Travel in India | Online Ticket Booking Irctc | Irctc All India Tour Packages | Kerala Tourism Package | New Year Travel Deals | Shimla Kullu Manali Tour Packages | Irctc Winter Getaway Packages | Kumbh Mela Tour Packages | North India Golden Triangle Tour Packages | holy land tour packages | Train Tour Packages from Bangalore | New Year Tour Packages | Tirupati Balaji Darshan | goa tour packages from surat by train | Puri Gangasagar Tour Package | Tour Packages from Delhi to Goa | Uttar Bharat Ki Yatra | Bangalore to Chennai Tour Packages | train travel planner | enchanting indian rail journeys | Govt International Tour Package | North East Safari Tour | south india packages | Cheap South Package Tours | Kerala Tourism | North India Tour Packages from Chennai | Andaman Holiday Tour Package | incredible india | cheap north package tours | Irctc Tour Packages | South Divine Tour | Kashi Tour Package from Hyderabad by Train | tourist train rides | International Tour Package Offers | Goa Cruise Package | Incredible North East Tour | sri lanka tour package | south india temple tour | Char Dham Yatra | Shri Jagannath Yatra | Kerala Temple Tour | Bharat Tirtha Darshan Yatra | Incredible India Tourism | Irctc Travel Experience | Irctc Travel Booking | Shimla Manali Tour from Mumbai | Domestic Tour Packages | delightful gangtok | India to Dubai Tour Packages | IRCTC Services | Simplified Travel with IRCTC | Ayodhya Tour Package | Gems of Rajasthan Tour | Irctc Tourism Services | Affordable Travel Irctc | Irctc Travel Packages | Group Tour Packages | holiday deal hotel plan | Glorious Goa tour package | India Hill Station Tour Packages | Malaysia Tour Packages | Maharashtra Temple Tour | Andaman Holiday Package | international tour packages | India Tour Packages From Delhi | Shirdi Sai Darshan Tour | Luxury Trains in South India | Bharat Tirtha Darshan | Ramayana Yatra Sri Lanka | Irctc Online Travel Services | South Tour Packages | South India Tour Packages | plan-train-trip | singapore tour packages | North India Tourism | kullu manali tour package | Gujarat Tour Package | Irctc Travel Guide | Best Tour Packages in India | Captivating Goa Tour | Golden Temple Amritsar Tour | Irctc Special Tour Packages
+    </div>
+  </div>
+</footer>
+
+<!-- Copyright and Socials -->
+<div class="bg-white py-6">
+  <div class="max-w-[1400px] mx-auto px-4">
+    <div class="flex flex-col md:flex-row items-center justify-between gap-6 text-sm text-gray-600">
+      <div class="text-xs">© 2026 IRCTC | All Right Reserved.</div>
+      <div class="flex items-center gap-4">
+        <a href="#" class="hover:text-gray-900 transition-colors font-medium">Whatsapp</a>
+        <span class="text-gray-300">|</span>
+        <span class="font-medium text-gray-900">Get Connected with us on social networks</span>
+        <div class="hidden sm:flex gap-2">
+          <a href="#" class="w-8 h-8 bg-gray-50 border border-gray-100 rounded flex items-center justify-center hover:bg-[#2d2383] hover:text-white hover:border-[#2d2383] text-gray-600 transition-all"><i class="fa-brands fa-facebook-f text-xs"></i></a>
+          <a href="#" class="w-8 h-8 bg-gray-50 border border-gray-100 rounded flex items-center justify-center hover:bg-[#2d2383] hover:text-white hover:border-[#2d2383] text-gray-600 transition-all"><i class="fa-brands fa-instagram text-xs"></i></a>
+          <a href="#" class="w-8 h-8 bg-gray-50 border border-gray-100 rounded flex items-center justify-center hover:bg-[#2d2383] hover:text-white hover:border-[#2d2383] text-gray-600 transition-all"><i class="fa-brands fa-x-twitter text-xs"></i></a>
+          <a href="#" class="w-8 h-8 bg-gray-50 border border-gray-100 rounded flex items-center justify-center hover:bg-[#2d2383] hover:text-white hover:border-[#2d2383] text-gray-600 transition-all"><i class="fa-brands fa-youtube text-xs"></i></a>
+        </div>
+      </div>
+      <div class="flex flex-wrap items-center gap-4 brandlogo opacity-80 hover:opacity-100 transition-opacity">
+        <a href="https://www.incredibleindia.org/content/incredibleindia/en.html" target="_blank" class="hover:scale-105 transition-transform"><img alt="incredibleindia IRCTC" loading="lazy" src="https://www.irctctourism.com/assets/img/flogo11.webp" class="h-5 w-auto object-contain"></a>
+        <a href="https://www.irctcbuddhisttrain.com/" target="_blank" class="hover:scale-105 transition-transform"><img alt="irctcbuddhisttrain" loading="lazy" src="https://www.irctctourism.com/assets/img/flogo1.webp" class="h-8 w-auto object-contain"></a>
+        <a href="http://www.the-maharajas.com/" target="_blank" class="hover:scale-105 transition-transform"><img alt="the-maharajas train" loading="lazy" src="https://www.irctctourism.com/assets/img/flogo3.webp" class="h-8 w-auto object-contain"></a>
+        <a href="https://www.goldenchariot.org/" target="_blank" class="hover:scale-105 transition-transform"><img alt="goldenchariot" loading="lazy" src="https://www.irctctourism.com/assets/img/flogo2.webp" class="h-8 w-auto object-contain"></a>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script src="config.js"></script>
+<script src="main.js"></script>
+</body>
+</html>
