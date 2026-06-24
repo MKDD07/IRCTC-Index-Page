@@ -21,21 +21,20 @@ const packages = [
   { name: 'Bali Honeymoon', duration: '5N/6D', price: '₹62,999', rating: '4.8', reviews: '2.7k', inclusions: 'Flights + Villa + Couples Spa', query: 'Bali honeymoon villa pool', badge: 'Honeymoon', badgeColor: 'bg-pink-100 text-pink-700' },
   { name: 'Singapore Explorer', duration: '4N/5D', price: '₹54,999', rating: '4.7', reviews: '1.5k', inclusions: 'Flights + Hotel + City Tour', query: 'Singapore Gardens by Bay', badge: 'International', badgeColor: 'bg-purple-100 text-purple-700' },
 ];
+
 const HotelSearch = {
-  API_KEY: typeof ENV !== 'undefined' ? ENV.SERP_API_KEY : 'YOUR_EXPOSED_SERP_API_KEY',
-    PROXIES: [
+  API_KEY: typeof ENV !== 'undefined' ? ENV.SERP_API_KEY : '',
+  PROXIES: [
     'https://corsproxy.io/?url=',
     'https://api.codetabs.com/v1/proxy?quest=',
     'https://thingproxy.freeboard.io/fetch/',
-  ]
-};
-
+  ],
   async get(targetUrl) {
     const encoded = encodeURIComponent(targetUrl);
     for (const proxy of this.PROXIES) {
       try {
         const res = await fetch(`${proxy}${encoded}`);
-        if (res.ok) return res.json();
+        if (res.ok) return await res.json();
         console.warn(`Proxy failed (${res.status}): ${proxy}`);
       } catch (e) {
         console.warn(`Proxy error: ${proxy}`, e.message);
@@ -46,6 +45,7 @@ const HotelSearch = {
 };
 
 // ─── SerpApi Data Fetching ────────────────────────────────────────────────────
+
 function getOffsetDateString(daysOffset) {
   const date = new Date();
   date.setDate(date.getDate() + daysOffset);
@@ -120,6 +120,7 @@ async function fetchFlightDeals(from = 'DEL', to = 'BOM') {
     return null;
   }
 }
+
 // ─── Static Data ──────────────────────────────────────────────────────────────
 
 const exploreItems = [
@@ -143,12 +144,21 @@ const irctcCategories = [
 // ─── Pexels ───────────────────────────────────────────────────────────────────
 
 async function fetchPexels(query, size = 'medium', perPage = 1) {
-  const r = await fetch(`https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=${perPage}&orientation=landscape`, {
-    headers: { Authorization: PEXELS_KEY }
-  });
-  const d = await r.json();
-  if (d.photos && d.photos.length) {
-    return d.photos[0].src[size] || d.photos[0].src.medium;
+  if (!PEXELS_KEY) {
+    console.warn('Pexels API key is missing. Bypassing fetch.');
+    return 'https://images.pexels.com/photos/1285625/pexels-photo-1285625.jpeg?auto=compress&cs=tinysrgb&w=1600';
+  }
+  try {
+    const targetUrl = `https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=${perPage}&orientation=landscape`;
+    const response = await fetch(`${HotelSearch.PROXY}${encodeURIComponent(targetUrl)}`, {
+      headers: { Authorization: PEXELS_KEY }
+    });
+    const d = await response.json();
+    if (d.photos && d.photos.length) {
+      return d.photos[0].src[size] || d.photos[0].src.medium;
+    }
+  } catch (error) {
+    console.error('Error fetching Pexels:', error);
   }
   return 'https://images.pexels.com/photos/1285625/pexels-photo-1285625.jpeg?auto=compress&cs=tinysrgb&w=1600';
 }
