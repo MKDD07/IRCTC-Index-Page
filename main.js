@@ -22,14 +22,25 @@ const packages = [
   { name: 'Singapore Explorer', duration: '4N/5D', price: '₹54,999', rating: '4.7', reviews: '1.5k', inclusions: 'Flights + Hotel + City Tour', query: 'Singapore Gardens by Bay', badge: 'International', badgeColor: 'bg-purple-100 text-purple-700' },
 ];
 const HotelSearch = {
-  API_KEY: typeof ENV !== 'undefined' ? ENV.SERP_API_KEY : 'YOUR_KEY_HERE',
-  PROXY: 'https://api.allorigins.win/raw?url=',
+  API_KEY: 'your_key_here',
+  PROXIES: [
+    'https://corsproxy.io/?url=',
+    'https://api.codetabs.com/v1/proxy?quest=',
+    'https://thingproxy.freeboard.io/fetch/',
+  ],
 
-  // Central fetch helper — always encode the target URL
   async get(targetUrl) {
-    const response = await fetch(`${this.PROXY}${encodeURIComponent(targetUrl)}`);
-    if (!response.ok) throw new Error(`Proxy error: ${response.status}`);
-    return response.json();
+    const encoded = encodeURIComponent(targetUrl);
+    for (const proxy of this.PROXIES) {
+      try {
+        const res = await fetch(`${proxy}${encoded}`);
+        if (res.ok) return res.json();
+        console.warn(`Proxy failed (${res.status}): ${proxy}`);
+      } catch (e) {
+        console.warn(`Proxy error: ${proxy}`, e.message);
+      }
+    }
+    throw new Error('All proxies failed');
   }
 };
 
