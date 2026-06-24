@@ -29,7 +29,7 @@ const HotelSearch = {
     'https://api.codetabs.com/v1/proxy?quest=',
     'https://thingproxy.freeboard.io/fetch/',
   ],
-  async get(targetUrl) {
+  get: async function(targetUrl) {
     const encoded = encodeURIComponent(targetUrl);
     for (const proxy of this.PROXIES) {
       try {
