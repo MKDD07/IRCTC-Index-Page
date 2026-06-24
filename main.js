@@ -22,12 +22,9 @@ const packages = [
   { name: 'Singapore Explorer', duration: '4N/5D', price: '₹54,999', rating: '4.7', reviews: '1.5k', inclusions: 'Flights + Hotel + City Tour', query: 'Singapore Gardens by Bay', badge: 'International', badgeColor: 'bg-purple-100 text-purple-700' },
 ];
 const HotelSearch = {
-  API_KEY: 'your_key_here',
-  PROXIES: [
-    'https://corsproxy.io/?url=',
-    'https://api.codetabs.com/v1/proxy?quest=',
-    'https://thingproxy.freeboard.io/fetch/',
-  ],
+  API_KEY: typeof ENV !== 'undefined' ? ENV.SERP_API_KEY : 'YOUR_EXPOSED_SERP_API_KEY',
+  PROXY: 'https://api.allorigins.win/get?url=',
+};
 
   async get(targetUrl) {
     const encoded = encodeURIComponent(targetUrl);
