@@ -23,7 +23,11 @@ const packages = [
 ];
 const HotelSearch = {
   API_KEY: typeof ENV !== 'undefined' ? ENV.SERP_API_KEY : 'YOUR_EXPOSED_SERP_API_KEY',
-  PROXY: 'https://api.allorigins.win/get?url=',
+    PROXIES: [
+    'https://corsproxy.io/?url=',
+    'https://api.codetabs.com/v1/proxy?quest=',
+    'https://thingproxy.freeboard.io/fetch/',
+  ]
 };
 
   async get(targetUrl) {
