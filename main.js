@@ -21,15 +21,19 @@ const packages = [
   { name: 'Bali Honeymoon', duration: '5N/6D', price: '₹62,999', rating: '4.8', reviews: '2.7k', inclusions: 'Flights + Villa + Couples Spa', query: 'Bali honeymoon villa pool', badge: 'Honeymoon', badgeColor: 'bg-pink-100 text-pink-700' },
   { name: 'Singapore Explorer', duration: '4N/5D', price: '₹54,999', rating: '4.7', reviews: '1.5k', inclusions: 'Flights + Hotel + City Tour', query: 'Singapore Gardens by Bay', badge: 'International', badgeColor: 'bg-purple-100 text-purple-700' },
 ];
-
 const HotelSearch = {
-  API_KEY: typeof ENV !== 'undefined' ? ENV.SERP_API_KEY : '',
+  API_KEY: typeof ENV !== 'undefined' ? ENV.SERP_API_KEY : 'YOUR_KEY_HERE',
   PROXY: 'https://api.allorigins.win/raw?url=',
+
+  // Central fetch helper — always encode the target URL
+  async get(targetUrl) {
+    const response = await fetch(`${this.PROXY}${encodeURIComponent(targetUrl)}`);
+    if (!response.ok) throw new Error(`Proxy error: ${response.status}`);
+    return response.json();
+  }
 };
 
-
 // ─── SerpApi Data Fetching ────────────────────────────────────────────────────
-
 function getOffsetDateString(daysOffset) {
   const date = new Date();
   date.setDate(date.getDate() + daysOffset);
@@ -43,10 +47,8 @@ function getFormattedDateString(daysOffset) {
   const date = new Date();
   date.setDate(date.getDate() + daysOffset);
   const day = date.getDate();
-  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-  const month = months[date.getMonth()];
-  const yearShort = String(date.getFullYear()).slice(-2);
-  return `${day} ${month} '${yearShort}`;
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return `${day} ${months[date.getMonth()]} '${String(date.getFullYear()).slice(-2)}`;
 }
 
 async function fetchHotels(location = 'Mumbai', checkIn = getOffsetDateString(3), checkOut = getOffsetDateString(8)) {
@@ -59,9 +61,7 @@ async function fetchHotels(location = 'Mumbai', checkIn = getOffsetDateString(3)
     num: 20
   });
   try {
-    const targetUrl = `https://serpapi.com/search.json?${params.toString()}`;
-    const response = await fetch(`${HotelSearch.PROXY}${targetUrl}`);
-    const data = await response.json();
+    const data = await HotelSearch.get(`https://serpapi.com/search.json?${params}`);
     return data.properties || [];
   } catch (error) {
     console.error('Error fetching hotels:', error);
@@ -79,9 +79,7 @@ async function fetchPackages(query = 'Holiday Packages Goa') {
     num: 6
   });
   try {
-    const targetUrl = `https://serpapi.com/search.json?${params.toString()}`;
-    const response = await fetch(`${HotelSearch.PROXY}${targetUrl}`);
-    const data = await response.json();
+    const data = await HotelSearch.get(`https://serpapi.com/search.json?${params}`);
     return data.properties || [];
   } catch (error) {
     console.error('Error fetching packages:', error);
@@ -100,24 +98,16 @@ async function fetchFlightDeals(from = 'DEL', to = 'BOM') {
     api_key: HotelSearch.API_KEY
   });
   try {
-    const url = `https://serpapi.com/search.json?${params.toString()}`;
-    const response = await fetch(`${HotelSearch.PROXY}${url}`);
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error(`SerpApi Flight Error (${response.status}):`, errorText);
-      return null;
-    }
-    const data = await response.json();
+    const data = await HotelSearch.get(`https://serpapi.com/search.json?${params}`);
     return {
       route: `${from} → ${to}`,
-      data: data.best_flights?.[0] || data.other_flights?.[0]
+      data: data.best_flights?.[0] || data.other_flights?.[0] || null
     };
   } catch (error) {
     console.error(`Fetch error for flights ${from}-${to}:`, error);
     return null;
   }
 }
-
 // ─── Static Data ──────────────────────────────────────────────────────────────
 
 const exploreItems = [
