@@ -27,9 +27,28 @@ const HotelSearch = {
   PROXY: 'https://corsproxy.io/?',
 };
 
-// ─── SerpApi Data Fetching ─────────────────────────────────────────────────────
+// ─── SerpApi Data Fetching ────────────────────────────────────────────────────
 
-async function fetchHotels(location = 'Mumbai', checkIn = '2026-06-20', checkOut = '2026-06-25') {
+function getOffsetDateString(daysOffset) {
+  const date = new Date();
+  date.setDate(date.getDate() + daysOffset);
+  const yyyy = date.getFullYear();
+  const mm = String(date.getMonth() + 1).padStart(2, '0');
+  const dd = String(date.getDate()).padStart(2, '0');
+  return `${yyyy}-${mm}-${dd}`;
+}
+
+function getFormattedDateString(daysOffset) {
+  const date = new Date();
+  date.setDate(date.getDate() + daysOffset);
+  const day = date.getDate();
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const month = months[date.getMonth()];
+  const yearShort = String(date.getFullYear()).slice(-2);
+  return `${day} ${month} '${yearShort}`;
+}
+
+async function fetchHotels(location = 'Mumbai', checkIn = getOffsetDateString(3), checkOut = getOffsetDateString(8)) {
   const params = new URLSearchParams({
     engine: 'google_hotels',
     q: location,
@@ -38,7 +57,6 @@ async function fetchHotels(location = 'Mumbai', checkIn = '2026-06-20', checkOut
     api_key: HotelSearch.API_KEY,
     num: 20
   });
-
   try {
     const targetUrl = `https://serpapi.com/search.json?${params.toString()}`;
     const response = await fetch(`${HotelSearch.PROXY}${targetUrl}`);
@@ -54,12 +72,11 @@ async function fetchPackages(query = 'Holiday Packages Goa') {
   const params = new URLSearchParams({
     engine: 'google_hotels',
     q: query,
-    check_in_date: '2026-06-15',
-    check_out_date: '2026-06-20',
+    check_in_date: getOffsetDateString(3),
+    check_out_date: getOffsetDateString(8),
     api_key: HotelSearch.API_KEY,
     num: 6
   });
-
   try {
     const targetUrl = `https://serpapi.com/search.json?${params.toString()}`;
     const response = await fetch(`${HotelSearch.PROXY}${targetUrl}`);
@@ -76,12 +93,11 @@ async function fetchFlightDeals(from = 'DEL', to = 'BOM') {
     engine: 'google_flights',
     departure_id: from,
     arrival_id: to,
-    outbound_date: '2026-06-20',
+    outbound_date: getOffsetDateString(7),
     type: '2',
     currency: 'INR',
     api_key: HotelSearch.API_KEY
   });
-
   try {
     const url = `https://serpapi.com/search.json?${params.toString()}`;
     const response = await fetch(`${HotelSearch.PROXY}${url}`);
@@ -101,7 +117,7 @@ async function fetchFlightDeals(from = 'DEL', to = 'BOM') {
   }
 }
 
-// ─── REST OF FILE UNCHANGED ──────────────────────────────────────────────────
+// ─── Static Data ──────────────────────────────────────────────────────────────
 
 const exploreItems = [
   { title: 'Guide: Best Time to Visit Goa', tag: 'Travel Guide', query: 'Goa beach sunset travel' },
@@ -121,6 +137,8 @@ const irctcCategories = [
   { name: 'Hill Station Tours', desc: 'Escape to the pristine Himalayas', query: 'Himalayas mountains snow green' },
 ];
 
+// ─── Pexels ───────────────────────────────────────────────────────────────────
+
 async function fetchPexels(query, size = 'medium', perPage = 1) {
   const r = await fetch(`https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=${perPage}&orientation=landscape`, {
     headers: { Authorization: PEXELS_KEY }
@@ -131,6 +149,8 @@ async function fetchPexels(query, size = 'medium', perPage = 1) {
   }
   return 'https://images.pexels.com/photos/1285625/pexels-photo-1285625.jpeg?auto=compress&cs=tinysrgb&w=1600';
 }
+
+// ─── Section Loaders ──────────────────────────────────────────────────────────
 
 async function loadTrending() {
   const grid = document.getElementById('trending-grid');
@@ -158,13 +178,10 @@ async function loadTrending() {
   new Swiper('.trending-swiper', {
     slidesPerView: 3,
     spaceBetween: 12,
-    autoplay: {
-      delay: 2500,
-      disableOnInteraction: false,
-    },
+    autoplay: { delay: 2500, disableOnInteraction: false },
     breakpoints: {
-      640: { slidesPerView: 3 },
-      768: { slidesPerView: 4 },
+      640:  { slidesPerView: 3 },
+      768:  { slidesPerView: 4 },
       1024: { slidesPerView: 5 },
       1200: { slidesPerView: 7 },
     }
@@ -207,7 +224,6 @@ async function loadPackages(query = 'Holiday Packages') {
 
     const totalPackagePrice = Math.round((numericPrice * 4) + 12000);
     const formattedPrice = `₹${totalPackagePrice.toLocaleString('en-IN')}`;
-
     const thumbnail = pkg.images?.[0]?.thumbnail || 'https://images.pexels.com/photos/1450353/pexels-photo-1450353.jpeg?auto=compress&cs=tinysrgb&w=600';
     const badges = ['Best Seller', 'Recommended', 'Limited Offer', 'New', 'Trending', 'Popular'];
     const badgeColors = ['bg-red-100 text-red-700', 'bg-green-100 text-green-700', 'bg-blue-100 text-blue-700', 'bg-purple-100 text-purple-700', 'bg-orange-100 text-orange-700', 'bg-pink-100 text-pink-700'];
@@ -216,7 +232,7 @@ async function loadPackages(query = 'Holiday Packages') {
       <div class="relative h-52 overflow-hidden">
         <img src="${thumbnail}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="${pkg.name}"/>
         <div class="absolute top-4 left-4 ${badgeColors[index % 6]} px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider shadow-sm z-10">${badges[index % 6]}</div>
-        <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group- transition-opacity duration-300"></div>
       </div>
       <div class="p-5">
         <div class="flex items-center justify-between mb-2">
@@ -263,24 +279,22 @@ async function loadFlights() {
   const grid = document.getElementById('flight-deals-grid');
   if (!grid) return;
 
-const routes = [
-  { from: 'DEL', to: 'BOM', name: 'Delhi → Mumbai' },
-  { from: 'DEL', to: 'BLR', name: 'Delhi → Bengaluru' },
-  { from: 'DEL', to: 'GOI', name: 'Delhi → Goa' },
-  { from: 'DEL', to: 'CCU', name: 'Delhi → Kolkata' },
-
-  // Added Major India Routes
-  { from: 'DEL', to: 'MAA', name: 'Delhi → Chennai' },
-  { from: 'DEL', to: 'HYD', name: 'Delhi → Hyderabad' },
-  { from: 'DEL', to: 'AMD', name: 'Delhi → Ahmedabad' },
-  { from: 'DEL', to: 'COK', name: 'Delhi → Kochi' },
-  { from: 'DEL', to: 'JAI', name: 'Delhi → Jaipur' },
-  { from: 'DEL', to: 'IXC', name: 'Delhi → Chandigarh' },
-  { from: 'DEL', to: 'SXR', name: 'Delhi → Srinagar' },
-  { from: 'DEL', to: 'IXB', name: 'Delhi → Bagdogra' }, // Darjeeling/Sikkim
-  { from: 'DEL', to: 'VNS', name: 'Delhi → Varanasi' },
-  { from: 'DEL', to: 'TRV', name: 'Delhi → Thiruvananthapuram' }
-];
+  const routes = [
+    { from: 'DEL', to: 'BOM', name: 'Delhi → Mumbai' },
+    { from: 'DEL', to: 'BLR', name: 'Delhi → Bengaluru' },
+    { from: 'DEL', to: 'GOI', name: 'Delhi → Goa' },
+    { from: 'DEL', to: 'CCU', name: 'Delhi → Kolkata' },
+    { from: 'DEL', to: 'MAA', name: 'Delhi → Chennai' },
+    { from: 'DEL', to: 'HYD', name: 'Delhi → Hyderabad' },
+    { from: 'DEL', to: 'AMD', name: 'Delhi → Ahmedabad' },
+    { from: 'DEL', to: 'COK', name: 'Delhi → Kochi' },
+    { from: 'DEL', to: 'JAI', name: 'Delhi → Jaipur' },
+    { from: 'DEL', to: 'IXC', name: 'Delhi → Chandigarh' },
+    { from: 'DEL', to: 'SXR', name: 'Delhi → Srinagar' },
+    { from: 'DEL', to: 'IXB', name: 'Delhi → Bagdogra' },
+    { from: 'DEL', to: 'VNS', name: 'Delhi → Varanasi' },
+    { from: 'DEL', to: 'TRV', name: 'Delhi → Thiruvananthapuram' },
+  ];
 
   grid.innerHTML = Array(4).fill(0).map(() => `
     <div class="swiper-slide bg-white border border-gray-100 rounded-2xl p-5 animate-pulse">
@@ -292,7 +306,6 @@ const routes = [
 
   const flightPromises = routes.map(r => fetchFlightDeals(r.from, r.to));
   const results = await Promise.all(flightPromises);
-
   grid.innerHTML = '';
 
   results.forEach((res, index) => {
@@ -303,12 +316,11 @@ const routes = [
     const price = flight.price ? `₹${flight.price.toLocaleString('en-IN')}` : '₹4,299';
     const originalPrice = Math.round(flight.price * 1.35);
     const discount = Math.round(((originalPrice - flight.price) / originalPrice) * 100);
-
     const airlineCode = leg.airline_code || (leg.airline === 'IndiGo' ? '6E' : leg.airline?.substring(0, 2).toUpperCase() || 'AI');
     const flightNumber = leg.flight_number || (100 + index * 12);
     const flightNo = `${airlineCode} ${flightNumber}`;
-    const dateStr = '20 Jun \'26';
-    const dateQuery = '2026-06-20';
+    const dateStr = getFormattedDateString(7);
+    const dateQuery = getOffsetDateString(7);
 
     let bookingUrl = flight.link || `https://www.google.com/travel/flights?q=flights+from+${routes[index].from}+to+${routes[index].to}`;
     if (leg.airline === 'IndiGo' || leg.airline_code === '6E') {
@@ -354,18 +366,12 @@ const routes = [
   new Swiper('.flight-deals-swiper', {
     slidesPerView: 1,
     spaceBetween: 16,
-    scrollbar: {
-      el: '.flight-deals-swiper .swiper-scrollbar',
-      draggable: true,
-    },
-    navigation: {
-      prevEl: flightNavBtns[0],
-      nextEl: flightNavBtns[1],
-    },
+    scrollbar: { el: '.flight-deals-swiper .swiper-scrollbar', draggable: true },
+    navigation: { prevEl: flightNavBtns[0], nextEl: flightNavBtns[1] },
     breakpoints: {
-      576: { slidesPerView: 1, spaceBetween: 16 },
-      768: { slidesPerView: 3, spaceBetween: 16 },
-      1024: { slidesPerView: 3, spaceBetween: 16 }
+      576:  { slidesPerView: 1, spaceBetween: 16 },
+      768:  { slidesPerView: 3, spaceBetween: 16 },
+      1024: { slidesPerView: 3, spaceBetween: 16 },
     }
   });
 }
@@ -409,9 +415,7 @@ async function loadHotels(location = 'India') {
 
     if (typeof rawPrice === 'string' && rawPrice.includes('$')) {
       const numericPrice = parseFloat(rawPrice.replace(/[^0-9.]/g, ''));
-      if (!isNaN(numericPrice)) {
-        formattedPrice = `₹${Math.round(numericPrice * 83).toLocaleString('en-IN')}`;
-      }
+      if (!isNaN(numericPrice)) formattedPrice = `₹${Math.round(numericPrice * 83).toLocaleString('en-IN')}`;
     } else if (typeof rawPrice === 'string' && !rawPrice.includes('₹') && !isNaN(parseFloat(rawPrice.replace(/[^0-9.]/g, '')))) {
       const numericPrice = parseFloat(rawPrice.replace(/[^0-9.]/g, ''));
       formattedPrice = `₹${Math.round(numericPrice * 83).toLocaleString('en-IN')}`;
@@ -473,24 +477,21 @@ async function loadIRCTC() {
   if (!grid) return;
 
   const tourImages = ['assets/img/tours-001.png', 'assets/img/tours-002.png', 'assets/img/tours-003.png'];
-  
+
   tourImages.forEach((url, i) => {
     const card = document.createElement('div');
     card.className = 'swiper-slide group relative rounded-3xl overflow-hidden cursor-pointer shadow-sm hover:shadow-xl transition-all duration-500 max-[576px]:!w-full md:!w-auto';
-    card.innerHTML = `<img src="${url}" alt="Tour ${i+1}" class="w-full h-auto md:h-[350px] md:w-auto object-contain group-hover:scale-[1.02] transition-transform duration-700 block">`;
+    card.innerHTML = `<img src="${url}" alt="Tour ${i + 1}" class="w-full h-auto md:h-[350px] md:w-auto object-contain group-hover:scale-[1.02] transition-transform duration-700 block">`;
     grid.appendChild(card);
   });
 
   new Swiper('.irctc-swiper', {
     slidesPerView: 'auto',
     spaceBetween: 16,
-    scrollbar: {
-      el: '.irctc-swiper .swiper-scrollbar',
-      draggable: true,
-    },
+    scrollbar: { el: '.irctc-swiper .swiper-scrollbar', draggable: true },
     breakpoints: {
       576: { spaceBetween: 0 },
-      768: { spaceBetween: 24 }
+      768: { spaceBetween: 24 },
     }
   });
 }
@@ -521,10 +522,10 @@ async function loadExplore() {
   }
 }
 
+// ─── UI Helpers ───────────────────────────────────────────────────────────────
+
 function setCategory(cat, btn) {
-  document.querySelectorAll('.category-tab').forEach(t => {
-    t.classList.remove('active');
-  });
+  document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
   btn.classList.add('active');
 
   document.querySelectorAll('[id^="form-"]').forEach(f => {
@@ -552,7 +553,7 @@ function setCategory(cat, btn) {
     cruise: 'luxury cruise ship ocean sunset',
     forex: 'money cash currency exchange',
     insurance: 'family travel insurance safety',
-    visa: 'passport visa stamp travel document'
+    visa: 'passport visa stamp travel document',
   };
 
   fetchPexels(queries[cat] || cat, 'large2x').then(url => {
@@ -587,7 +588,7 @@ function toggleTripType(type) {
 
 function swapCities() {
   const fromEl = document.querySelector('#form-flights .grid .border:nth-child(1) .font-bold');
-  const toEl = document.querySelector('#form-flights .grid .border:nth-child(3) .font-bold');
+  const toEl   = document.querySelector('#form-flights .grid .border:nth-child(3) .font-bold');
   if (fromEl && toEl) {
     const tmp = fromEl.textContent;
     fromEl.textContent = toEl.textContent;
@@ -600,21 +601,15 @@ function loadBannerSwiper() {
     slidesPerView: 1,
     loop: true,
     spaceBetween: 20,
-    autoplay: {
-      delay: 3500,
-      disableOnInteraction: false,
-    },
-    pagination: {
-      el: '.banner-swiper .swiper-pagination',
-      type: 'progressbar',
-    },
+    autoplay: { delay: 3500, disableOnInteraction: false },
+    pagination: { el: '.banner-swiper .swiper-pagination', type: 'progressbar' },
     navigation: {
       nextEl: '.banner-swiper .swiper-button-next',
       prevEl: '.banner-swiper .swiper-button-prev',
     },
     breakpoints: {
       1200: { slidesPerView: 2, spaceBetween: 24 },
-      0: { slidesPerView: 1, spaceBetween: 0 }
+      0:    { slidesPerView: 1, spaceBetween: 0 },
     }
   });
 }
@@ -623,18 +618,419 @@ function toggleFAQ(button) {
   const content = button.nextElementSibling;
   const icon = button.querySelector('i');
   if (!content || !icon) return;
+
   document.querySelectorAll('#faq-accordion > div > div:last-child').forEach(div => {
     if (div !== content && !div.classList.contains('hidden')) {
       div.classList.add('hidden');
       div.previousElementSibling.querySelector('i').style.transform = 'rotate(0deg)';
     }
   });
+
   const isHidden = content.classList.contains('hidden');
   content.classList.toggle('hidden');
   icon.style.transform = isHidden ? 'rotate(180deg)' : 'rotate(0deg)';
 }
 
-// ─── INIT ────────────────────────────────────────────────────────────────────
+// ─── ANIMATION SYSTEM ─────────────────────────────────────────────────────────
+
+/**
+ * Collects all animatable elements within a section.
+ */
+function getAnimatableElements(section, excludeCards = false) {
+  if (section.id === 'flights-section') {
+    const wrapper = document.getElementById('flights-content-wrapper');
+    return wrapper ? [wrapper] : [section];
+  }
+
+  if (section.id === 'query-section') {
+    const elements = [];
+    const img = section.querySelector('img[alt="TripEase App"]');
+    if (img) elements.push(img);
+    
+    const formSide = section.querySelector('.rounded-2xl.p-5');
+    if (formSide) {
+      formSide.querySelectorAll('h3, p, .grid > div, form > .space-y-2, button[type="submit"]').forEach(el => {
+        elements.push(el);
+      });
+    }
+    return elements.filter(el =>
+      !el.classList.contains('section-animate-btn') && !el.closest?.('.section-animate-btn')
+    );
+  }
+
+  if (section.id === 'vande-bharat-section') {
+    const elements = [];
+    const logo = section.querySelector('img');
+    const badge = section.querySelector('span');
+    const h3 = section.querySelector('h3');
+    const p = section.querySelector('p');
+    if (logo) elements.push(logo);
+    if (badge) elements.push(badge);
+    if (h3) elements.push(h3);
+    if (p) elements.push(p);
+    return elements.filter(el =>
+      !el.classList.contains('section-animate-btn') && !el.closest?.('.section-animate-btn')
+    );
+  }
+
+  const elements = [];
+
+  // Headings / paragraphs not inside dynamic card zones
+  section.querySelectorAll('h2, h3, p').forEach(el => {
+    if (
+      !el.closest('.swiper-slide') &&
+      !el.closest('#packages-grid') &&
+      !el.closest('#hotels-grid') &&
+      !el.closest('#explore-grid') &&
+      !el.closest('#offers-scroll') &&
+      !el.closest('.footer') &&
+      !el.closest('footer')
+    ) {
+      elements.push(el);
+    }
+  });
+
+  // Hero form tabs and fields
+  const heroForm = section.querySelector('.bg-white\\/95, form, .grid-cols-12');
+  if (heroForm) {
+    const tabs = section.querySelector('.flex.flex-wrap.gap-2, .border-b');
+    if (tabs) elements.push(tabs);
+    heroForm.querySelectorAll('.grid > div, .flex > div').forEach(f => elements.push(f));
+  }
+
+  // Cards and their inner pieces (for stagger depth)
+  if (!excludeCards) {
+    section
+      .querySelectorAll('.swiper-slide, #packages-grid > div, #hotels-grid > div, #explore-grid > div, #offers-scroll > div')
+      .forEach(card => {
+        elements.push(card);
+        const innerImg    = card.querySelector('.relative.h-52, .relative.h-56, .relative');
+        const innerRating = card.querySelector('.p-5 > div.flex, .p-5 > div:first-child');
+        const innerTitle  = card.querySelector('.p-5 > h3, h3');
+        const innerDesc   = card.querySelector('.p-5 > p, p');
+        const innerFooter = card.querySelector('.p-5 > div.pt-4, .p5 > div:last-child');
+        if (innerImg)    elements.push(innerImg);
+        if (innerRating) elements.push(innerRating);
+        if (innerTitle)  elements.push(innerTitle);
+        if (innerDesc)   elements.push(innerDesc);
+        if (innerFooter) elements.push(innerFooter);
+      });
+  }
+
+  // Fallback: direct children
+  if (elements.length === 0) {
+    Array.from(section.children).forEach(el => {
+      if (!el.classList.contains('section-animate-btn') && el.tagName !== 'SCRIPT' && el.tagName !== 'STYLE') {
+        elements.push(el);
+      }
+    });
+  }
+
+  return elements.filter(el =>
+    !el.classList.contains('section-animate-btn') && !el.closest?.('.section-animate-btn')
+  );
+}
+
+// ── Animation-type rotation ───────────────────────────────────────────────────
+// Sections are assigned one of 4 types in round-robin order so each type
+// appears across the page. The assignment is stored on the element and reused.
+
+const ANIM_TYPES = ['popup', 'fade', 'clip-bottom', 'clip-left-to-right'];
+let _animTypeCounter = 0;
+
+function getOrAssignSectionAnimType(section) {
+  if (!section.dataset.animType) {
+    section.dataset.animType = ANIM_TYPES[_animTypeCounter % ANIM_TYPES.length];
+    _animTypeCounter++;
+  }
+  return section.dataset.animType;
+}
+
+// "From" and "To" vars for each animation type
+const ANIM_FROM = {
+  'popup':              { opacity: 0, scale: 0.75, y: 45,  x: 0,   clipPath: 'none' },
+  'fade':               { opacity: 0, scale: 1,    y: 22,  x: 0,   clipPath: 'none' },
+  'clip-bottom':        { opacity: 0, scale: 1,    y: 20,  x: 0,   clipPath: 'inset(100% 0% 0% 0%)' },
+  'clip-left-to-right': { opacity: 0, scale: 1,    y: 0,   x: -18, clipPath: 'inset(0% 100% 0% 0%)' },
+};
+
+const ANIM_TO = {
+  'popup':              { opacity: 1, scale: 1, y: 0, x: 0, clipPath: 'none',                duration: 1.00, ease: 'back.out(1.4)', stagger: 0.055 },
+  'fade':               { opacity: 1, scale: 1, y: 0, x: 0, clipPath: 'none',                duration: 0.80, ease: 'power2.out',    stagger: 0.045 },
+  'clip-bottom':        { opacity: 1, scale: 1, y: 0, x: 0, clipPath: 'inset(0% 0% 0% 0%)', duration: 0.85, ease: 'power2.out',    stagger: 0.060 },
+  'clip-left-to-right': { opacity: 1, scale: 1, y: 0, x: 0, clipPath: 'inset(0% 0% 0% 0%)', duration: 0.85, ease: 'power2.out',    stagger: 0.060 },
+};
+
+// ── Core animate function (single definition) ─────────────────────────────────
+
+/**
+ * @param {Element} section
+ * @param {boolean} isUserTriggered
+ *   true  → use the section's assigned animation type (button press)
+ *   false → universal scroll-down fade-in
+ */
+function animateSection(section, isUserTriggered = false) {
+  if (!section) return;
+
+  // Flights section: special horizontal clip reveal on its wrapper
+  if (section.id === 'flights-section') {
+    const wrapper = document.getElementById('flights-content-wrapper');
+    if (wrapper) {
+      gsap.killTweensOf(wrapper);
+      if (isUserTriggered) {
+        gsap.fromTo(wrapper,
+          { clipPath: 'inset(0% 100% 0% 0%)', opacity: 1, y: 0 },
+          { clipPath: 'inset(0% 0% 0% 0%)', opacity: 1, y: 0, duration: 3.0, ease: 'power2.out', overwrite: 'auto' }
+        );
+      } else {
+        gsap.fromTo(wrapper,
+          { opacity: 0, y: 18, clipPath: 'none' },
+          { opacity: 1, y: 0, clipPath: 'none', duration: 0.65, ease: 'power1.out', overwrite: 'auto' }
+        );
+      }
+    }
+    return;
+  }
+
+  // Custom Query section: special image popin from left with clip path
+  if (section.id === 'query-section') {
+    const img = section.querySelector('img[alt="TripEase App"]');
+    const formSide = section.querySelector('.rounded-2xl.p-5');
+    const formElements = formSide ? Array.from(formSide.querySelectorAll('h3, p, .grid > div, form > .space-y-2, button[type="submit"]')) : [];
+
+    if (isUserTriggered) {
+      if (img) {
+        gsap.killTweensOf(img);
+        gsap.fromTo(img,
+          { clipPath: 'inset(0% 100% 0% 0%)', x: -80, opacity: 0, scale: 0.9 },
+          { clipPath: 'inset(0% 0% 0% 0%)', x: 0, opacity: 1, scale: 1, duration: 1.2, ease: 'power3.out' }
+        );
+      }
+      if (formElements.length) {
+        gsap.killTweensOf(formElements);
+        gsap.fromTo(formElements,
+          { opacity: 0, y: 20 },
+          { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out', stagger: 0.06, delay: 0.2 }
+        );
+      }
+    } else {
+      const allEls = [];
+      if (img) allEls.push(img);
+      if (formElements.length) allEls.push(...formElements);
+      gsap.killTweensOf(allEls);
+      gsap.fromTo(allEls,
+        { opacity: 0, y: 18, scale: 1, clipPath: 'none', x: 0 },
+        { opacity: 1, y: 0, scale: 1, clipPath: 'none', x: 0, duration: 0.65, ease: 'power1.out', stagger: 0.04 }
+      );
+    }
+    return;
+  }
+
+  const elements = getAnimatableElements(section, false);
+  if (!elements.length) return;
+  gsap.killTweensOf(elements);
+
+  if (isUserTriggered) {
+    // ── Button press: play the section's assigned animation type ────────────
+    const animType = getOrAssignSectionAnimType(section);
+    gsap.fromTo(elements,
+      { ...ANIM_FROM[animType] },
+      { ...ANIM_TO[animType], overwrite: 'auto' }
+    );
+  } else {
+    // ── Scroll-triggered: universal soft fade-up for all sections ───────────
+    gsap.fromTo(elements,
+      { opacity: 0, y: 18, scale: 1, clipPath: 'none' },
+      { opacity: 1, y: 0,  scale: 1, clipPath: 'none', duration: 0.65, ease: 'power1.out', stagger: 0.04, overwrite: 'auto' }
+    );
+  }
+}
+
+// ── Viewport observer ─────────────────────────────────────────────────────────
+
+let scrollObserver = null;
+
+/**
+ * Pre-hides all sections then observes them so each animates on first enter.
+ * @param {boolean} isUserTriggered
+ */
+function setupViewportAnimations(isUserTriggered = false) {
+  if (scrollObserver) scrollObserver.disconnect();
+
+  const flightsSection = document.getElementById('flights-section');
+  if (flightsSection) {
+    // Keep outer container visible
+    gsap.set(flightsSection, { opacity: 1, y: 0, scale: 1, clearProps: 'transform,opacity' });
+    
+    // Dynamic wrap if needed
+    if (!document.getElementById('flights-content-wrapper')) {
+      const wrapper = document.createElement('div');
+      wrapper.id = 'flights-content-wrapper';
+      wrapper.className = 'w-full h-full';
+      
+      const children = Array.from(flightsSection.childNodes);
+      children.forEach(child => {
+        if (child.nodeType === 1 && child.classList.contains('section-animate-btn')) {
+          // skip
+        } else {
+          wrapper.appendChild(child);
+        }
+      });
+      flightsSection.appendChild(wrapper);
+    }
+  }
+
+  // Pre-hide every non-hero section
+  document.querySelectorAll('section').forEach(section => {
+    if (section.id === 'hero-section') return;
+
+    if (section.id === 'flights-section') {
+      const wrapper = document.getElementById('flights-content-wrapper');
+      if (wrapper) {
+        if (isUserTriggered) {
+          gsap.set(wrapper, { clipPath: 'inset(0% 100% 0% 0%)', opacity: 1, y: 0 });
+        } else {
+          gsap.set(wrapper, { opacity: 0, y: 18, clipPath: 'none' });
+        }
+      }
+      return;
+    }
+
+    if (section.id === 'query-section') {
+      const img = section.querySelector('img[alt="TripEase App"]');
+      const formSide = section.querySelector('.rounded-2xl.p-5');
+      const formElements = formSide ? Array.from(formSide.querySelectorAll('h3, p, .grid > div, form > .space-y-2, button[type="submit"]')) : [];
+
+      if (isUserTriggered) {
+        if (img) gsap.set(img, { clipPath: 'inset(0% 100% 0% 0%)', x: -80, opacity: 0, scale: 0.9 });
+        gsap.set(formElements, { opacity: 0, y: 20 });
+      } else {
+        const allEls = [];
+        if (img) allEls.push(img);
+        if (formElements.length) allEls.push(...formElements);
+        gsap.set(allEls, { opacity: 0, y: 18, scale: 1, clipPath: 'none', x: 0 });
+      }
+      return;
+    }
+
+    const elements = getAnimatableElements(section, false);
+    if (!elements.length) return;
+
+    if (isUserTriggered) {
+      const animType = getOrAssignSectionAnimType(section);
+      gsap.set(elements, { ...ANIM_FROM[animType] });
+    } else {
+      gsap.set(elements, { opacity: 0, y: 18, scale: 1, clipPath: 'none' });
+    }
+  });
+
+  scrollObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        animateSection(entry.target, isUserTriggered);
+        scrollObserver.unobserve(entry.target); // fire once per section
+      }
+    });
+  }, { threshold: 0.08 });
+
+  document.querySelectorAll('section').forEach(section => {
+    if (section.id !== 'hero-section') scrollObserver.observe(section);
+  });
+}
+
+// ── Global "record" button (resets scroll + replays all with assigned types) ──
+
+function animateAllSections() {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  setTimeout(() => setupViewportAnimations(true), 500);
+}
+
+// ── Per-section animate buttons ───────────────────────────────────────────────
+
+function addSectionButtons() {
+  document.querySelectorAll('section').forEach(section => {
+    if (section.offsetHeight < 100) return;
+    if (section.id === 'hero-section') return;
+
+    section.classList.add('relative');
+
+    const btn = document.createElement('button');
+    btn.className = [
+      'section-animate-btn',
+      'absolute top-3 right-3 z-30',
+      'bg-white/60 hover:bg-white backdrop-blur-md',
+      'opacity-[0.1] ',
+      'text-gray-500 hover:text-gray-900',
+      'px-2.5 py-1 rounded-full text-[10px] font-bold tracking-wide',
+      'shadow-sm hover:shadow transition-all duration-300',
+      'flex items-center gap-1',
+    ].join(' ');
+    btn.innerHTML = '<i class="fa-solid fa-sparkles text-amber-500"></i> Animate';
+    btn.title = 'Animate Section';
+
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      
+      if (section.id === 'flights-section') {
+        const wrapper = document.getElementById('flights-content-wrapper');
+        if (wrapper) {
+          gsap.killTweensOf(wrapper);
+          gsap.set(wrapper, { clipPath: 'inset(0% 100% 0% 0%)', opacity: 1, y: 0 });
+          requestAnimationFrame(() => animateSection(section, true));
+        }
+        return;
+      }
+
+      if (section.id === 'query-section') {
+        const img = section.querySelector('img[alt="TripEase App"]');
+        const formSide = section.querySelector('.rounded-2xl.p-5');
+        const formElements = formSide ? Array.from(formSide.querySelectorAll('h3, p, .grid > div, form > .space-y-2, button[type="submit"]')) : [];
+
+        if (img) {
+          gsap.killTweensOf(img);
+          gsap.set(img, { clipPath: 'inset(0% 100% 0% 0%)', x: -80, opacity: 0, scale: 0.9 });
+        }
+        gsap.killTweensOf(formElements);
+        gsap.set(formElements, { opacity: 0, y: 20 });
+        requestAnimationFrame(() => animateSection(section, true));
+        return;
+      }
+
+      // Pre-set the "from" state then animate
+      const elements = getAnimatableElements(section, false);
+      const animType = getOrAssignSectionAnimType(section);
+      gsap.killTweensOf(elements);
+      gsap.set(elements, { ...ANIM_FROM[animType] });
+      // One rAF so gsap.set() is flushed before the tween starts
+      requestAnimationFrame(() => animateSection(section, true));
+    });
+
+    section.appendChild(btn);
+  });
+}
+
+// ── Global navbar record button ───────────────────────────────────────────────
+
+function createGlobalAnimateBtn() {
+  const navbarRight = document.querySelector('nav .max-w-\\[1400px\\] > div:nth-child(2)');
+  if (!navbarRight) return;
+
+  const globalBtn = document.createElement('button');
+  globalBtn.className = [
+    'bg-red-50 hover:bg-red-100 text-red-600',
+    'border border-red-100 px-3.5 py-2 rounded-lg text-xs font-bold',
+    'transition-all opacity-[0.1] ',
+    'flex items-center gap-1.5 mr-2 shadow-sm',
+  ].join(' ');
+  globalBtn.innerHTML = '<i class="fa-solid fa-circle text-[8px] animate-pulse"></i>';
+  globalBtn.title = 'Animate All Sections (Record Mode)';
+  globalBtn.addEventListener('click', animateAllSections);
+
+  navbarRight.insertBefore(globalBtn, navbarRight.lastElementChild);
+}
+
+// ─── INIT ─────────────────────────────────────────────────────────────────────
+
 loadTrending();
 loadPackages('India Holiday Packages');
 loadFlights();
@@ -642,3 +1038,233 @@ loadHotels();
 loadIRCTC();
 loadExplore();
 loadBannerSwiper();
+
+setTimeout(() => {
+  addSectionButtons();
+  createGlobalAnimateBtn();
+  setupViewportAnimations(); // universal scroll fade-in on normal load
+}, 4000);
+
+// Lenis smooth scroll
+const lenis = new Lenis({
+  duration: 1.2,
+  easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+  smoothWheel: true,
+});
+
+function raf(time) {
+  lenis.raf(time);
+  requestAnimationFrame(raf);
+}
+requestAnimationFrame(raf);
+
+// ─── TRAINS DEMO AUTOFILL & SEARCH SYSTEM ────────────────────────────────────
+
+const trainData = [
+  { no: "12952", name: "Mumbai Central Tejas Rajdhani Express", type: "Fastest", timeFrom: "4:55 PM", timeTo: "7:38 AM", nextDay: "+1 day", duration: "14h 43m", changes: "0 changes", priceRange: "₹3,161 - ₹5,306", classes: "3A, 2A, 1A", status: "WL seats" },
+  { no: "22222", name: "Mumbai CSMT Rajdhani Express", type: "Fast", timeFrom: "4:55 PM", timeTo: "11:15 AM", nextDay: "+1 day", duration: "18h 20m", changes: "0 changes", priceRange: "₹3,261 - ₹5,461", classes: "3A, 2A, 1A", status: "WL seats" },
+  { no: "12954", name: "August Kranti Tejas Rajdhani Express", type: "", timeFrom: "5:15 PM", timeTo: "9:08 AM", nextDay: "+1 day", duration: "15h 53m", changes: "0 changes", priceRange: "₹3,136 - ₹5,246", classes: "3A, 2A, 1A", status: "WL seats" },
+  { no: "12904", name: "Golden Temple Mail", type: "", timeFrom: "4:00 AM", timeTo: "10:43 PM", nextDay: "", duration: "18h 43m", changes: "0 changes", priceRange: "₹668 - ₹3,956", classes: "SL, 3A, 2A, 1A", status: "WL seats" },
+  { no: "12138", name: "Punjab Mail", type: "", timeFrom: "5:10 AM", timeTo: "7:35 AM", nextDay: "+1 day", duration: "26h 25m", changes: "0 changes", priceRange: "₹728 - ₹4,331", classes: "SL, 3A, 2A, 1A", status: "WL seats" },
+  { no: "12618", name: "Mangala Lakshadweep Express", type: "", timeFrom: "5:35 AM", timeTo: "5:17 AM", nextDay: "+1 day", duration: "23h 42m", changes: "0 changes", priceRange: "₹713 - ₹2,536", classes: "SL, 3A, 2A", status: "WL seats" },
+  { no: "12264", name: "Pune AC Duronto Express", type: "", timeFrom: "6:16 AM", timeTo: "9:40 PM", nextDay: "", duration: "15h 24m", changes: "0 changes", priceRange: "₹3,201 - ₹5,276", classes: "3A, 2A, 1A", status: "WL seats" },
+  { no: "12215", name: "Bandra Terminus Garib Rath Express", type: "", timeFrom: "9:12 AM", timeTo: "6:36 AM", nextDay: "+1 day", duration: "21h 24m", changes: "0 changes", priceRange: "₹1,201", classes: "3A", status: "WL seats" },
+  { no: "12908", name: "Maharashtra Sampark Kranti Express", type: "", timeFrom: "4:30 PM", timeTo: "8:23 AM", nextDay: "+1 day", duration: "15h 53m", changes: "0 changes", priceRange: "₹668 - ₹2,376", classes: "SL, 3A, 2A", status: "WL seats" },
+  { no: "22452", name: "Bandra Terminus SF Express", type: "", timeFrom: "4:32 PM", timeTo: "2:12 PM", nextDay: "+1 day", duration: "21h 40m", changes: "0 changes", priceRange: "₹658 - ₹3,911", classes: "3A, 2A, 1A", status: "WL seats" },
+  { no: "12926", name: "Paschim SF Express", type: "", timeFrom: "4:35 PM", timeTo: "1:38 PM", nextDay: "+1 day", duration: "21h 3m", changes: "0 changes", priceRange: "₹673 - ₹4,006", classes: "SL, 3A, 2A, 1A", status: "WL seats" },
+  { no: "19020", name: "Bandra Terminus Express", type: "", timeFrom: "6:55 PM", timeTo: "9:27 PM", nextDay: "+1 day", duration: "26h 32m", changes: "0 changes", priceRange: "₹603 - ₹3,881", classes: "SL, 3A, 2A, 1A", status: "WL seats" },
+  { no: "11058", name: "Mumbai CSMT Express", type: "", timeFrom: "8:40 PM", timeTo: "12:05 AM", nextDay: "+2 days", duration: "27h 25m", changes: "0 changes", priceRange: "₹698 - ₹2,546", classes: "SL, 2A", status: "WL seats" },
+  { no: "22918", name: "Bandra Terminus SF Express", type: "", timeFrom: "10:15 PM", timeTo: "3:57 PM", nextDay: "+1 day", duration: "17h 42m", changes: "0 changes", priceRange: "₹668 - ₹3,956", classes: "SL, 3A, 2A", status: "WL seats" },
+];
+
+function typeWriter(elementId, text, callback) {
+  const el = document.getElementById(elementId);
+  if (!el) return callback ? callback() : null;
+  el.textContent = '';
+  let index = 0;
+  const timer = setInterval(() => {
+    el.textContent += text[index];
+    index++;
+    if (index >= text.length) {
+      clearInterval(timer);
+      if (callback) callback();
+    }
+  }, 40);
+}
+
+function startTrainAutofillDemo() {
+  const btn = document.getElementById('trains-autofill-btn');
+  if (btn) {
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+  }
+
+  const fromEl   = document.getElementById('train-from-text');
+  const toEl     = document.getElementById('train-to-text');
+  const dateEl   = document.getElementById('train-date-text');
+  const returnEl = document.getElementById('train-return-text');
+  const classEl  = document.getElementById('train-class-text');
+  const quotaEl  = document.getElementById('train-quota-text');
+
+  const textEls = [fromEl, toEl, dateEl, returnEl, classEl, quotaEl].filter(Boolean);
+
+  gsap.to(textEls, {
+    opacity: 0, y: -8, duration: 0.3, stagger: 0.04,
+    onComplete: () => {
+      textEls.forEach(el => { el.textContent = ''; });
+      gsap.set(textEls, { y: 0, opacity: 1 });
+
+      if (fromEl)   { fromEl.classList.remove('text-gray-400');   fromEl.classList.add('text-gray-800'); }
+      if (toEl)     { toEl.classList.remove('text-gray-400');     toEl.classList.add('text-gray-800'); }
+      if (returnEl) { returnEl.classList.remove('text-gray-400'); returnEl.classList.add('text-gray-800'); }
+
+      typeWriter('train-from-text', 'NDLS — New Delhi (all stations)', () => {
+        setTimeout(() => {
+          typeWriter('train-to-text', 'MMCT — Mumbai Central (all stations)', () => {
+            setTimeout(() => {
+              typeWriter('train-date-text', 'Thu 25 Jun \'26', () => {
+                setTimeout(() => {
+                  typeWriter('train-return-text', 'Sun 28 Jun \'26', () => {
+                    setTimeout(() => {
+                      typeWriter('train-class-text', '3rd AC (3A)', () => {
+                        setTimeout(() => {
+                          typeWriter('train-quota-text', 'Person With Disability', () => {
+                            setTimeout(() => {
+                              if (btn) {
+                                btn.disabled = false;
+                                btn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles animate-pulse"></i>';
+                              }
+                              showTrainResults();
+                            }, 500);
+                          });
+                        }, 150);
+                      });
+                    }, 150);
+                  });
+                }, 150);
+              });
+            }, 150);
+          });
+        }, 150);
+      });
+    }
+  });
+}
+
+function showTrainResults() {
+  const container = document.getElementById('train-results-container');
+  const list = document.getElementById('train-results-list');
+  if (!container || !list) return;
+
+  list.innerHTML = '';
+
+  trainData.forEach(train => {
+    const card = document.createElement('div');
+    card.className = 'train-card bg-gray-50 hover:bg-indigo-50/20 border border-gray-200/80 rounded-2xl p-4 transition-all cursor-pointer group/card flex flex-col gap-3 shadow-sm hover:shadow-md';
+
+    const classList = train.classes.split(',').map(c => `
+      <span class="px-2.5 py-1 bg-white text-gray-700 text-xs font-bold rounded-lg border border-gray-200 shadow-sm">${c.trim()}</span>
+    `).join('');
+
+    card.innerHTML = `
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+        <div class="flex flex-wrap items-center gap-3">
+          <span class="text-xs bg-[#2d2383]/10 text-[#2d2383] px-2.5 py-1 rounded-lg font-bold">${train.no}</span>
+          <h4 class="font-bold text-gray-900 text-base group-hover/card:text-[#2d2383] transition-colors">${train.name}</h4>
+          ${train.type ? `<span class="text-[9px] bg-red-100 text-red-700 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">${train.type}</span>` : ''}
+        </div>
+        <div class="text-right">
+          <div class="text-[10px] text-gray-400">Starts from</div>
+          <div class="text-base font-extrabold text-[#2d2383]">${train.priceRange.split('-')[0].trim()}</div>
+        </div>
+      </div>
+      <div class="flex flex-wrap items-center justify-between gap-4 pt-2 border-t border-gray-100">
+        <div class="flex items-center gap-6">
+          <div>
+            <div class="text-base font-bold text-gray-900">${train.timeFrom}</div>
+            <div class="text-[10px] text-gray-400">New Delhi (NDLS)</div>
+          </div>
+          <div class="flex flex-col items-center">
+            <span class="text-[10px] text-gray-500 font-bold tracking-wide">${train.duration}</span>
+            <div class="w-16 h-[2px] bg-gray-300 relative my-1">
+              <i class="fa-solid fa-circle text-[6px] text-gray-400 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"></i>
+            </div>
+            <span class="text-[9px] text-gray-400 uppercase">${train.changes}</span>
+          </div>
+          <div>
+            <div class="text-base font-bold text-gray-900">${train.timeTo} ${train.nextDay ? `<span class="text-xs text-red-500 font-medium">${train.nextDay}</span>` : ''}</div>
+            <div class="text-[10px] text-gray-400">Mumbai Central (MMCT)</div>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          ${classList}
+          <div class="w-8 h-8 rounded-full bg-gray-100 hover:bg-indigo-100 flex items-center justify-center text-gray-500 transition-colors ml-2">
+            <i class="fa-solid fa-chevron-down text-xs transition-transform duration-300 group-hover/card:translate-y-[1px]"></i>
+          </div>
+        </div>
+      </div>
+      <div class="train-details-expand hidden border-t border-dashed border-gray-200 pt-3 mt-1">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-3.5 rounded-xl border border-gray-100 shadow-inner">
+          <div>
+            <span class="text-xs font-semibold text-gray-500 block mb-1">Availability Status</span>
+            <span class="text-xs font-bold text-amber-600 bg-amber-50 border border-amber-200 px-2.5 py-1 rounded-lg flex items-center gap-1.5 w-fit">
+              <i class="fa-solid fa-clock text-xs"></i> ${train.status} – ${train.classes}
+            </span>
+          </div>
+          <div class="flex items-center gap-3">
+            <div class="text-right">
+              <span class="text-[10px] text-gray-400 block">Estimated Fare</span>
+              <span class="text-sm font-bold text-gray-900">${train.priceRange}</span>
+            </div>
+            <button onclick="event.stopPropagation(); alert('Booking initiated for Train ${train.no} - ${train.name}')" class="primary-color hover:bg-[#1e175a] text-white text-xs px-5 py-2.5 rounded-lg font-bold shadow transition-all">
+              Book Tickets
+            </button>
+          </div>
+        </div>
+      </div>`;
+
+    card.addEventListener('click', () => {
+      const details = card.querySelector('.train-details-expand');
+      const arrow = card.querySelector('.fa-chevron-down');
+      const isHidden = details.classList.contains('hidden');
+
+      list.querySelectorAll('.train-details-expand').forEach(d => {
+        if (d !== details) d.classList.add('hidden');
+      });
+      list.querySelectorAll('.fa-chevron-down').forEach(a => {
+        if (a !== arrow) a.style.transform = 'rotate(0deg)';
+      });
+
+      if (isHidden) {
+        details.classList.remove('hidden');
+        arrow.style.transform = 'rotate(180deg)';
+        gsap.fromTo(details,
+          { opacity: 0, height: 0 },
+          { opacity: 1, height: 'auto', duration: 0.35, ease: 'power2.out' }
+        );
+      } else {
+        gsap.to(details, {
+          opacity: 0, height: 0, duration: 0.25, ease: 'power2.in',
+          onComplete: () => details.classList.add('hidden'),
+        });
+        arrow.style.transform = 'rotate(0deg)';
+      }
+    });
+
+    list.appendChild(card);
+  });
+
+  container.classList.remove('hidden');
+  gsap.fromTo(container,
+    { opacity: 0, y: 30, scale: 0.98 },
+    { opacity: 1, y: 0,  scale: 1,    duration: 0.5, ease: 'power2.out' }
+  );
+  gsap.fromTo(list.children,
+    { opacity: 0, y: 15 },
+    { opacity: 1, y: 0,  duration: 0.4, stagger: 0.05, ease: 'power2.out', delay: 0.2 }
+  );
+  setTimeout(() => container.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 100);
+}
+
+window.startTrainAutofillDemo = startTrainAutofillDemo;
+window.showTrainResults = showTrainResults;
