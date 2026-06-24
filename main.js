@@ -29,7 +29,7 @@ const HotelSearch = {
     'https://api.codetabs.com/v1/proxy?quest=',
     'https://thingproxy.freeboard.io/fetch/',
   ],
-  get: async function(targetUrl) {
+  request: async function(targetUrl) {
     const encoded = encodeURIComponent(targetUrl);
     for (const proxy of this.PROXIES) {
       try {
@@ -73,7 +73,7 @@ async function fetchHotels(location = 'Mumbai', checkIn = getOffsetDateString(3)
     num: 20
   });
   try {
-    const data = await HotelSearch.get(`https://serpapi.com/search.json?${params}`);
+    const data = await HotelSearch.request(`https://serpapi.com/search.json?${params}`);
     return data.properties || [];
   } catch (error) {
     console.error('Error fetching hotels:', error);
@@ -91,7 +91,7 @@ async function fetchPackages(query = 'Holiday Packages Goa') {
     num: 6
   });
   try {
-    const data = await HotelSearch.get(`https://serpapi.com/search.json?${params}`);
+    const data = await HotelSearch.request(`https://serpapi.com/search.json?${params}`);
     return data.properties || [];
   } catch (error) {
     console.error('Error fetching packages:', error);
@@ -110,7 +110,7 @@ async function fetchFlightDeals(from = 'DEL', to = 'BOM') {
     api_key: HotelSearch.API_KEY
   });
   try {
-    const data = await HotelSearch.get(`https://serpapi.com/search.json?${params}`);
+    const data = await HotelSearch.request(`https://serpapi.com/search.json?${params}`);
     return {
       route: `${from} → ${to}`,
       data: data.best_flights?.[0] || data.other_flights?.[0] || null
