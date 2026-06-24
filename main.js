@@ -150,7 +150,8 @@ async function fetchPexels(query, size = 'medium', perPage = 1) {
   }
   try {
     const targetUrl = `https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=${perPage}&orientation=landscape`;
-    const response = await fetch(`${HotelSearch.PROXY}${encodeURIComponent(targetUrl)}`, {
+    const proxy = (HotelSearch.PROXIES && HotelSearch.PROXIES[0]) || 'https://corsproxy.io/?url=';
+    const response = await fetch(`${proxy}${encodeURIComponent(targetUrl)}`, {
       headers: { Authorization: PEXELS_KEY }
     });
     const d = await response.json();
