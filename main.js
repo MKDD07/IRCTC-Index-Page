@@ -24,8 +24,9 @@ const packages = [
 
 const HotelSearch = {
   API_KEY: typeof ENV !== 'undefined' ? ENV.SERP_API_KEY : '',
-  PROXY: 'https://corsproxy.io/?',
+  PROXY: 'https://api.allorigins.win/raw?url=',
 };
+
 
 // ─── SerpApi Data Fetching ────────────────────────────────────────────────────
 
