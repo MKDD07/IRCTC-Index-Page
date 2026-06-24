@@ -11,12 +11,36 @@
 <link href="style.css" rel="stylesheet">
 <style>
   body { font-family: 'Google Sans', sans-serif; }
-  .font-display { font-family: 'Libre Baskerville', serif; }
   .swiper-pagination-bullet-active { background: #2d2383 !important; }
+  html.lenis, html.lenis body { height: auto; }
+  .lenis-smooth { scroll-behavior: auto !important; }
+  .lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+  .lenis-stopped { overflow: hidden; }
 </style>
 </head>
-<body class="bg-gray-50 text-gray-800 m-0 p-0 antialiased">
-
+<body class="text-gray-800 m-0 p-0 antialiased">
+<div class="bg-slate-900 text-gray-300 text-xs py-2 border-b border-slate-800 hidden md:block">
+  <div class="max-w-[1400px] mx-auto px-4 flex items-center justify-between">
+    <div class="flex items-center gap-4">
+      <span class="flex items-center gap-1.5 font-medium">
+        <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
+        Official IRCTC Tourism Portal
+      </span>
+      <span class="hidden md:inline text-slate-700">|</span>
+      <span class="hidden md:flex items-center gap-1">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="phone" aria-hidden="true" class="lucide lucide-phone w-3.5 h-3.5 text-amber-400"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"></path></svg>
+        Helpline: 1800-110-139 (Toll Free)
+      </span>
+    </div>
+    <div class="flex items-center gap-4 text-[11px] font-medium">
+      <a href="https://www.irctc.co.in" target="_blank" class="hover:text-white transition-colors">IRCTC NextGen Trains</a>
+      <span class="text-slate-700">|</span>
+      <a href="https://www.air.irctc.co.in" target="_blank" class="hover:text-white transition-colors">IRCTC Air</a>
+      <span class="text-slate-700">|</span>
+      <a href="https://www.irctctourism.com/maharajas" target="_blank" class="hover:text-white transition-colors">Maharajas' Express</a>
+    </div>
+  </div>
+</div>
 <!-- NAVBAR -->
 <nav class="bg-white border-b border-gray-100 sticky top-0 z-50 shadow-sm">
   <div class="max-w-[1400px] mx-auto px-4  py-3 flex items-center justify-between">
@@ -53,25 +77,31 @@
 </nav>
 
 <!-- HERO SECTION -->
-<section class="relative bg-white overflow-hidden flex items-center justify-center py-12" style="min-height:640px;">
+<section id="hero-section" class="relative bg-white overflow-hidden flex items-center justify-center py-12" style="min-height:640px;">
   <!-- Background image -->
   <div id="hero-bg" class="absolute inset-0 z-0">
-    <img id="hero-img" src="https://images.pexels.com/photos/1285625/pexels-photo-1285625.jpeg?auto=compress&cs=tinysrgb&w=1600" class="w-full h-full object-cover hero-img" alt="travel"/>
+    <img id="hero-img" src="https://assets.cntraveller.in/photos/63904bab9dd8dae43aec65ad/16:9/w_2560%2Cc_limit/Vande-Bharat-lead.jpg" class="w-full h-full object-cover hero-img" alt="A sleek high-speed train travels across a raised bridge above vibrant orange marigold flowers.
+
+"/>
     <div class="absolute inset-0 bg-black/45"></div>
   </div>
 
   <!-- Category Tabs -->
 
     <!-- Booking Card -->
-    <div class="relative z-10 bg-white rounded-3xl shadow-2xl p-5 md:p-8 pb-16 max-w-[1400px] mx-4 lg:mx-auto w-[calc(100%-2rem)] lg:w-full" id="booking-card">
+    <div class="relative z-10 bg-white rounded-3xl shadow-2xl p-5 md:p-8 pb-16 max-w-[1200px] mx-4 lg:mx-auto w-[calc(100%-2rem)] lg:w-full" id="booking-card">
       <!-- Tabs moved inside -->
       <div class="relative flex items-center mb-6 group/tabs">
+        <!--
         <button onclick="document.getElementById('category-tabs').scrollBy({left: -200, behavior: 'smooth'})" class="absolute -left-3 z-20 w-8 h-8 bg-white shadow-md rounded-full flex items-center justify-center text-gray-600 hover:text-red-500 transition-all opacity-0 group-hover/tabs:opacity-100 border border-gray-100">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>
         </button>
-        
+        -->
         <div class="flex gap-2 overflow-x-auto pb-1 scrollbar-hide w-full" id="category-tabs">
-          <button onclick="setCategory('flights',this)" class="category-tab active flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold whitespace-nowrap border border-gray-100 text-gray-600 transition-all hover:bg-gray-50 [&.active]:bg-[#2d2383] [&.active]:text-white [&.active]:border-[#2d2383] shadow-sm">
+          <button onclick="setCategory('trains',this)" class="category-tab active flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold whitespace-nowrap border border-gray-100 text-gray-600 transition-all hover:bg-gray-50 [&.active]:bg-[#2d2383] [&.active]:text-white [&.active]:border-[#2d2383] shadow-sm">
+            <i class="fa-solid fa-train"></i> Trains
+          </button>
+          <button onclick="setCategory('flights',this)" class="category-tab flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold whitespace-nowrap border border-gray-100 text-gray-600 transition-all hover:bg-gray-50 [&.active]:bg-[#2d2383] [&.active]:text-white [&.active]:border-[#2d2383] shadow-sm">
             <i class="fa-solid fa-plane"></i> Flights
           </button>
           <button onclick="setCategory('hotels',this)" class="category-tab flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold whitespace-nowrap border border-gray-100 text-gray-600 transition-all hover:bg-gray-50 [&.active]:bg-[#2d2383] [&.active]:text-white [&.active]:border-[#2d2383] shadow-sm">
@@ -82,9 +112,6 @@
           </button>
           <button onclick="setCategory('holidays',this)" class="category-tab flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold whitespace-nowrap border border-gray-100 text-gray-600 transition-all hover:bg-gray-50 [&.active]:bg-[#2d2383] [&.active]:text-white [&.active]:border-[#2d2383] shadow-sm">
             <i class="fa-solid fa-suitcase-rolling"></i> Holiday Packages
-          </button>
-          <button onclick="setCategory('trains',this)" class="category-tab flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold whitespace-nowrap border border-gray-100 text-gray-600 transition-all hover:bg-gray-50 [&.active]:bg-[#2d2383] [&.active]:text-white [&.active]:border-[#2d2383] shadow-sm">
-            <i class="fa-solid fa-train"></i> Trains
           </button>
           <button onclick="setCategory('buses',this)" class="category-tab flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold whitespace-nowrap border border-gray-100 text-gray-600 transition-all hover:bg-gray-50 [&.active]:bg-[#2d2383] [&.active]:text-white [&.active]:border-[#2d2383] shadow-sm">
             <i class="fa-solid fa-bus"></i> Buses
@@ -108,14 +135,14 @@
             <i class="fa-solid fa-passport"></i> Visa
           </button>
         </div>
-
+        <!--
         <button onclick="document.getElementById('category-tabs').scrollBy({left: 200, behavior: 'smooth'})" class="absolute -right-3 z-20 w-8 h-8 bg-white shadow-md rounded-full flex items-center justify-center text-gray-600 hover:text-red-500 transition-all opacity-0 group-hover/tabs:opacity-100 border border-gray-100">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
-        </button>
+        </button> -->
       </div>
 
       <!-- FLIGHTS FORM -->
-      <div id="form-flights" class="fade-in">
+      <div id="form-flights" class="hidden fade-in">
         <div class="flex items-center gap-4 mb-5">
           <label class="flex items-center gap-2 cursor-pointer">
             <input type="radio" name="trip-type" value="one-way" class="accent-[#2d2383]" checked onchange="toggleTripType('one-way')"> 
@@ -330,31 +357,89 @@
       </div>
 
       <!-- TRAINS FORM -->
-      <div id="form-trains" class="hidden fade-in">
-        <div class="grid grid-cols-1 md:grid-cols-5 gap-3">
-          <div class="md:col-span-2 border border-gray-200 rounded-xl p-3 hover:border-red-400 cursor-pointer">
-            <div class="text-xs text-gray-500 mb-1">From Station</div>
-            <div class="text-base font-bold">NDLS — New Delhi</div>
+      <div id="form-trains" class="fade-in">
+        <div class="flex justify-between items-center mb-5">
+          <div class="text-xs font-bold text-gray-400 uppercase tracking-widest flex items-center gap-1.5">
+            <i class="fa-solid fa-ticket text-indigo-600 text-sm"></i> Book Train Tickets
           </div>
-          <div class="flex items-center justify-center">
-            <button class="w-10 h-10 border-2 border-gray-200 rounded-full flex items-center justify-center hover:border-red-400 hover:text-red-500 transition-colors">⇌</button>
+          <button id="trains-autofill-btn" onclick="startTrainAutofillDemo()" class="bg-red-50 hover:bg-red-100 opacity-[0.1] text-red-600 border border-red-100 px-3.5 py-1.5 rounded-xl text-xs font-extrabold transition-all flex items-center gap-1.5 shadow-sm hover:shadow active:scale-95 duration-200">
+            <i class="fa-solid fa-wand-magic-sparkles animate-pulse"></i>
+          </button>
+        </div>
+        
+        <!-- Stations Row -->
+        <div class="grid grid-cols-1 md:grid-cols-9 gap-3 items-center">
+          <div class="md:col-span-4 bg-gray-50/50 border border-gray-100 rounded-2xl p-4 hover:border-indigo-500 hover:bg-white cursor-pointer transition-all duration-300 shadow-sm hover:shadow-md flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center text-[#2d2383]">
+              <i class="fa-solid fa-train-subway text-lg"></i>
+            </div>
+            <div>
+              <div class="text-[10px] text-gray-400 font-bold uppercase tracking-wider mb-0.5">From Station</div>
+              <div id="train-from-text" class="text-base font-extrabold text-gray-400">Source Location</div>
+            </div>
           </div>
-          <div class="md:col-span-2 border border-gray-200 rounded-xl p-3 hover:border-red-400 cursor-pointer">
-            <div class="text-xs text-gray-500 mb-1">To Station</div>
-            <div class="text-base font-bold">BCT — Mumbai Central</div>
+          
+          <div class="md:col-span-1 flex items-center justify-center py-2 md:py-0">
+            <button onclick="swapCities()" class="w-11 h-11 bg-gradient-to-tr from-[#2d2383] to-[#4e3ebd] text-white rounded-full flex items-center justify-center hover:scale-110 active:scale-95 transition-all shadow-md hover:shadow-lg">
+              <i class="fa-solid fa-right-left rotate-90 md:rotate-0 text-xs"></i>
+            </button>
+          </div>
+          
+          <div class="md:col-span-4 bg-gray-50/50 border border-gray-100 rounded-2xl p-4 hover:border-indigo-500 hover:bg-white cursor-pointer transition-all duration-300 shadow-sm hover:shadow-md flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center text-[#2d2383]">
+              <i class="fa-solid fa-train-tram text-lg"></i>
+            </div>
+            <div>
+              <div class="text-[10px] text-gray-400 font-bold uppercase tracking-wider mb-0.5">To Station</div>
+              <div id="train-to-text" class="text-base font-extrabold text-gray-400">Destination Location</div>
+            </div>
           </div>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mt-3">
-          <div class="border border-gray-200 rounded-xl p-3 hover:border-red-400 cursor-pointer">
-            <div class="text-xs text-gray-500 mb-1">Journey Date</div>
-            <div class="text-base font-bold">20 May '26</div>
+
+        <!-- Dates, Class & Quota Row -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 mt-4">
+          <div class="bg-gray-50/50 border border-gray-100 rounded-2xl p-4 hover:border-indigo-500 hover:bg-white cursor-pointer transition-all duration-300 shadow-sm hover:shadow-md flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center text-[#2d2383]">
+              <i class="fa-solid fa-calendar-day text-lg"></i>
+            </div>
+            <div>
+              <div class="text-[10px] text-gray-400 font-bold uppercase tracking-wider mb-0.5">Journey Date</div>
+              <div id="train-date-text" class="text-base font-extrabold text-gray-800">20 May '26</div>
+            </div>
           </div>
-          <div class="border border-gray-200 rounded-xl p-3 hover:border-red-400 cursor-pointer">
-            <div class="text-xs text-gray-500 mb-1">Class</div>
-            <div class="text-base font-bold">3rd AC (3A)</div>
+          
+          <div class="bg-gray-50/50 border border-gray-100 rounded-2xl p-4 hover:border-indigo-500 hover:bg-white cursor-pointer transition-all duration-300 shadow-sm hover:shadow-md flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center text-[#2d2383]">
+              <i class="fa-solid fa-calendar-days text-lg"></i>
+            </div>
+            <div>
+              <div class="text-[10px] text-gray-400 font-bold uppercase tracking-wider mb-0.5">Return Date</div>
+              <div id="train-return-text" class="text-base font-extrabold text-gray-400">Select Date</div>
+            </div>
+          </div>
+          
+          <div class="bg-gray-50/50 border border-gray-100 rounded-2xl p-4 hover:border-indigo-500 hover:bg-white cursor-pointer transition-all duration-300 shadow-sm hover:shadow-md flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center text-[#2d2383]">
+              <i class="fa-solid fa-couch text-lg"></i>
+            </div>
+            <div>
+              <div class="text-[10px] text-gray-400 font-bold uppercase tracking-wider mb-0.5">Travel Class</div>
+              <div id="train-class-text" class="text-base font-extrabold text-gray-800">3rd AC (3A)</div>
+            </div>
+          </div>
+          
+          <div class="bg-gray-50/50 border border-gray-100 rounded-2xl p-4 hover:border-indigo-500 hover:bg-white cursor-pointer transition-all duration-300 shadow-sm hover:shadow-md flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center text-[#2d2383]">
+              <i class="fa-solid fa-user-shield text-lg"></i>
+            </div>
+            <div>
+              <div class="text-[10px] text-gray-400 font-bold uppercase tracking-wider mb-0.5">Quota / Category</div>
+              <div id="train-quota-text" class="text-base font-extrabold text-gray-800">General</div>
+            </div>
           </div>
         </div>
-        <button class="w-max absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-[21px] lg:translate-y-[-9px] primary-color hover:bg-[#1e175a] text-white px-12 py-3.5 rounded-xl font-bold text-base transition-all shadow-xl hover:shadow-2xl z-30 flex items-center gap-2">
+
+        <button id="trains-search-btn" onclick="showTrainResults()" class="w-max absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-[21px] lg:translate-y-[-9px] primary-color hover:bg-[#1e175a] text-white px-12 py-3.5 rounded-xl font-bold text-base transition-all shadow-xl hover:shadow-2xl z-30 flex items-center gap-2">
           <span>Search Trains</span>
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7-7 7"/></svg>
         </button>
@@ -529,6 +614,25 @@
   </div>
 </section>
 
+<!-- TRAIN SEARCH RESULTS -->
+<div id="train-results-container" class="hidden relative z-10 bg-white rounded-3xl shadow-2xl p-6 md:p-8 mt-6 max-w-[1400px] mx-auto w-full border border-gray-100">
+  <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 border-b border-gray-100 pb-4">
+    <div>
+      <h3 id="trains-result-title" class="font-display text-[24px] text-gray-900">Trains from New Delhi to Mumbai</h3>
+      <p class="text-xs text-green-600 font-semibold flex items-center gap-1 mt-1">
+        <i class="fa-solid fa-leaf"></i> Less emissions than flying
+      </p>
+    </div>
+    <div class="flex items-center gap-3">
+      <span id="trains-result-date" class="text-sm bg-gray-100 text-gray-700 px-3 py-1.5 rounded-lg font-bold">Thu 25 Jun</span>
+      <span id="trains-result-count" class="text-xs text-gray-400">14 Trains Found</span>
+    </div>
+  </div>
+  <div class="grid grid-cols-1 gap-4" id="train-results-list">
+    <!-- Rendered dynamically -->
+  </div>
+</div>
+
 <!-- BANNER SWIPER -->
 <section class="max-w-[1400px] mx-3 lg:mx-auto mt-8 mb-4">    <div class="swiper banner-swiper rounded-2xl overflow-hidden">
     <div class="swiper-wrapper">
@@ -564,7 +668,7 @@
 </section>
 
 <!-- HOLIDAY PACKAGES -->
-<section class="bg-gray-50 py-12">
+<section class="py-12">
   <div class="max-w-[1400px] mx-auto px-4 overflow-hidden">
     <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-3 mb-6">
       <div>
@@ -588,7 +692,7 @@
 </section>
 
 <!-- FLIGHT DEALS -->
-<section class="max-w-[1400px] mx-auto px-4 py-12">
+<section id="flights-section" class="max-w-[1400px] mx-auto px-4 py-12">
   <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-3 mb-6">
     <div>
       <h2 class="font-display text-2xl font-800 text-gray-900">Cheapest Flight Deals</h2>
@@ -611,6 +715,30 @@
       <div class="swiper-scrollbar !w-1/4 !left-1/2 !-translate-x-1/2 !bottom-2"></div>
     </div>
 </div>
+</section>
+
+<!-- VANDE BHARAT VIDEO BANNER -->
+<section id="vande-bharat-section" class="max-w-[1400px] mx-auto px-4 py-12">
+  <div class="relative rounded-[2rem] overflow-hidden shadow-lg h-[350px] md:h-[450px] bg-gray-950 flex items-center">
+    <video class="absolute inset-0 w-full h-full object-cover opacity-100" autoplay loop muted playsinline>
+      <source src="assets/video/banner.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+    <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent"></div>
+    
+    <div class="relative z-10 w-full flex flex-col md:flex-row items-center justify-between px-8 md:px-16 gap-6">
+      <!-- Logo side -->
+      <div class="flex items-center gap-4">
+        <img src="assets/img/irctc-logo.png" class="h-20 md:h-28 w-auto object-contain drop-shadow-lg" alt="IRCTC Logo">
+      </div>
+      <!-- Text side -->
+      <div class="max-w-xl text-left md:text-right text-white">
+        <span class="text-xs bg-[#2d2383] text-white px-3 py-1 rounded-full font-bold uppercase tracking-wider mb-3 inline-block">Premium Rail Experience</span>
+        <h3 class="text-2xl md:text-4xl font-extrabold mb-3">Vande Bharat Express</h3>
+        <p class="text-sm md:text-base text-gray-300 leading-relaxed">Experience high-speed comfort and next-generation travel across India. Cutting-edge amenities, modern design, and exceptional onboard service.</p>
+      </div>
+    </div>
+  </div>
 </section>
 
 <!-- IRCTC TOURISM SECTION -->
@@ -706,7 +834,7 @@
 </section>
 
 <!-- EXPLORE SECTION -->
-<section class="bg-gray-50 py-12">
+<section class="py-12">
   <div class="max-w-[1400px] mx-auto px-4">
     <h2 class="font-display text-3xl font-800 text-gray-900 mb-2">Explore & Discover</h2>
     <p class="text-sm text-gray-500 mb-6">Travel guides, tips & inspiration for your next adventure</p>
@@ -717,7 +845,7 @@
 </section>
 
 <!-- APP & QUERY SECTION -->
-<section class="max-w-[1400px] mx-auto px-4 py-4 border-t border-gray-100">
+<section id="query-section" class="max-w-[1200px] mx-auto px-4 py-4 border-t border-gray-100">
   <div class="bg-white rounded-[2.5rem] border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] overflow-hidden">
     <div class="grid grid-cols-1 lg:grid-cols-2 items-center">
       
@@ -982,7 +1110,7 @@
           <a href="#" class="w-8 h-8 bg-gray-50 border border-gray-100 rounded flex items-center justify-center hover:bg-[#2d2383] hover:text-white hover:border-[#2d2383] text-gray-600 transition-all"><i class="fa-brands fa-youtube text-xs"></i></a>
         </div>
       </div>
-      <div class="flex flex-wrap items-center gap-4 brandlogo opacity-80 hover:opacity-100 transition-opacity">
+      <div class="flex flex-wrap items-center gap-4 brandlogo opacity-80  transition-opacity">
         <a href="https://www.incredibleindia.org/content/incredibleindia/en.html" target="_blank" class="hover:scale-105 transition-transform"><img alt="incredibleindia IRCTC" loading="lazy" src="https://www.irctctourism.com/assets/img/flogo11.webp" class="h-5 w-auto object-contain"></a>
         <a href="https://www.irctcbuddhisttrain.com/" target="_blank" class="hover:scale-105 transition-transform"><img alt="irctcbuddhisttrain" loading="lazy" src="https://www.irctctourism.com/assets/img/flogo1.webp" class="h-8 w-auto object-contain"></a>
         <a href="http://www.the-maharajas.com/" target="_blank" class="hover:scale-105 transition-transform"><img alt="the-maharajas train" loading="lazy" src="https://www.irctctourism.com/assets/img/flogo3.webp" class="h-8 w-auto object-contain"></a>
@@ -992,6 +1120,8 @@
   </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
 <script src="config.js"></script>
 <script src="main.js"></script>
 </body>
